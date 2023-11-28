@@ -4,13 +4,9 @@ A new Flutter project.
 
 ## Getting Started
 
-This project is a starting point for a Flutter application.
+sebelum menjalankan project tersebut masukkan command line dibawah ini
+`flutter pub get`
 
-A few resources to get you started if this is your first Flutter project:
+seteleh terdownload sekarang tekang tombol `F5` lalu pilih sesuai device yang akan menjadi outputnya disini saya menggunakan android emulator.
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+jika belum menginstall flutter, dart dan android studio bisa menonton tutorialnya [disini](https://www.youtube.com/watch?v=EhGW4UYpKSE&ab_channel=GhostTogether) 
