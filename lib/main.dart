@@ -1,6 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:perpustakaan/models/auth_model.dart';
+import 'package:perpustakaan/screens/admin/dashboard_admin.dart';
+import 'package:perpustakaan/screens/admin/setting_admin.dart';
 import 'package:perpustakaan/screens/auth_page.dart';
+import 'package:perpustakaan/screens/user/dashboard_user.dart';
+import 'package:perpustakaan/screens/user/setting_admin.dart';
+import 'package:provider/provider.dart';
 
 void main() {
   runApp(const MyApp());
@@ -13,14 +19,21 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark);
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
+    return ChangeNotifierProvider(
+      create: (context) => AuthModel(),
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        home: AuthPage(),
+        routes: {
+          '/auth': (context) => AuthPage(),
+          // ADMIN
+          '/dashboard_admin': (context) => const DashboardAdmin(),
+          '/setting_admin': (context) => const SettingAdminPage(),
+
+          '/dashboard_user': (context) => const DashboardUser(),
+          '/setting_user': (context) => const SettingUserPage(),
+        },
       ),
-      debugShowCheckedModeBanner: false,
-      home: const AuthPage()
     );
   }
 }

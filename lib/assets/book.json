@@ -1,0 +1,23 @@
+[
+  {
+    "nama_buku": "Chainsaw Man",
+    "author": "Menghadeh",
+    "tahun": "2020",
+    "penerbit": "Shonen Jump",
+    "pdf_link": "./pdf/sample.pdf"
+  },
+  {
+    "nama_buku": "Chainsaw Man",
+    "author": "Menghadeh",
+    "tahun": "2020",
+    "penerbit": "Shonen Jump",
+    "pdf_link": "./pdf/sample.pdf"
+  },
+  {
+    "nama_buku": "Chainsaw Man",
+    "author": "Menghadeh",
+    "tahun": "2020",
+    "penerbit": "Shonen Jump",
+    "pdf_link": "./pdf/sample.pdf"
+  }
+]
