@@ -22,6 +22,14 @@ class SettingAdminPage extends StatelessWidget {
     }
 
     return Scaffold(
+      appBar: AppBar(
+        leading: (
+          IconButton(
+            onPressed: () { Navigator.pushReplacementNamed(context, '/dashboard_admin'); }, 
+            icon: Icon(Icons.arrow_back_ios)
+          )
+        ),
+      ),
       body: Center(
         child: Center(
           child: ElevatedButton(
