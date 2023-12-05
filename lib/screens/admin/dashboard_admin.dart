@@ -93,57 +93,42 @@ class _DashboardAdminState extends State<DashboardAdmin> {
     );
   }
 
+  void onDeleteBook(dynamic book) {
+    setState(() {
+      allData.remove(book);
+      searchResults.remove(book); // Remove from searchResults as well
+      groupDataByGenre();
+    });
+
+    saveData();
+  }
+
   Future<void> saveData() async {
     try {
       final file = File('${(await getExternalStorageDirectory())!.path}/book.json');
       await file.writeAsString(json.encode(allData));
+      print('Data saved successfully.');
     } catch (e) {
       print('Error saving data: $e');
     }
   }
 
-  void onDeleteBook(dynamic book) {
-  showDialog(
-    context: context,
-    builder: (BuildContext context) {
-      return AlertDialog(
-        title: Text('Hapus Buku'),
-        content: Text('Anda yakin ingin menghapus buku ini?'),
-        actions: [
-          TextButton(
-            onPressed: () {
-              Navigator.of(context).pop(); // Tutup dialog
-            },
-            child: Text('Batal'),
-          ),
-          TextButton(
-            onPressed: () {
-              // Hapus buku dari daftar
-              setState(() {
-                allData.remove(book);
-                searchResults.remove(book); // Hapus dari searchResults juga
-                groupDataByGenre();
-              });
-
-              saveData(); // Simpan perubahan ke file
-
-              Navigator.of(context).pop(); // Tutup dialog
-            },
-            child: Text('Hapus'),
-          ),
-        ],
-      );
-    },
-  );
-}
-
   // ... (kode lainnya)
 
-  @override
+@override
 Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Dashboard Page'),
+        title: const Text('Dashboard'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.settings),
+            onPressed: () {
+              // Panggil fungsi logout
+              Navigator.pushReplacementNamed(context, '/setting_user');
+            },
+          ),
+        ],
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -242,6 +227,28 @@ Widget build(BuildContext context) {
           ],
         ),
       ),
+      bottomNavigationBar: BottomAppBar(
+        child: GestureDetector(
+          onTap: () { Navigator.pushReplacementNamed(context, '/upload_admin'); },
+          child: Container(
+            // margin: const EdgeInsets.symmetric(horizontal: 25),
+            decoration: BoxDecoration(
+              color: Colors.black,
+              borderRadius: BorderRadius.circular(8)
+              ),
+            child: const Center(
+              child: Text(
+                "Upload",
+                style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 16
+                  ),
+              ),
+            ),
+          ),
+        ),
+      ),
     );
   }
 }
@@ -290,9 +297,7 @@ class BookDetailPage extends StatelessWidget {
           ),
         ],
       ),
-      body: SfPdfViewer.asset(
-        book['pdf_link'],
-      )
+      body: SfPdfViewer.file(File(book['pdf_link']))
     );
   }
 }

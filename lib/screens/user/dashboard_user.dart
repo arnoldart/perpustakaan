@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:perpustakaan/models/auth_model.dart';
 import 'package:provider/provider.dart';
+import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
 class DashboardUser extends StatelessWidget {
   const DashboardUser({super.key});
@@ -34,9 +35,9 @@ class DashboardUser extends StatelessWidget {
           ),
         ],
       ),
-      body: const Center(
-        child: Text('Selamat datang di Dashboard!'),
-      ), 
+      body: SfPdfViewer.asset(
+        'assets/sample.pdf',
+      ),
     );
   }
 }

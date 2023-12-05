@@ -64,7 +64,8 @@ class _UploadPageAdminState extends State<UploadPageAdmin> {
 
   Future<void> _pickImage() async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
-      type: FileType.image,
+      type: FileType.custom,
+      allowedExtensions: ['jpg', 'jpeg', 'png'],
       allowMultiple: false,
     );
 
