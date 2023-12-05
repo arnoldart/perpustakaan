@@ -13,12 +13,13 @@ class DashboardAdmin extends StatefulWidget {
   @override
   State<DashboardAdmin> createState() => _DashboardAdminState();
 }
-
 class _DashboardAdminState extends State<DashboardAdmin> {
   List<dynamic> allData = [];
   List<dynamic> searchResults = [];
   Map<String, List<dynamic>> groupedData = {};
   TextEditingController searchController = TextEditingController();
+
+  
 
   @override
   void initState() {
@@ -28,28 +29,54 @@ class _DashboardAdminState extends State<DashboardAdmin> {
 
   Future<void> fetchData() async {
     try {
-      final file = File('${(await getExternalStorageDirectory())!.path}/data_pdf.json');
-      String jsonData = await file.readAsString();
+      // Baca data saat ini dari book.json
+      List<dynamic> jsonData = await fetchBookData();
+
       setState(() {
-        allData = json.decode(jsonData);
-        searchResults = List.from(allData); // Copy allData to searchResults initially
+        allData = jsonData;
+        searchResults = List.from(allData);
         groupDataByGenre();
       });
     } catch (e) {
-      // Handle errors, such as file not found
+      // Handle errors, seperti file tidak ditemukan
       print('Error fetching data: $e');
+    }
+  }
+
+  Future<List<dynamic>> fetchBookData() async {
+    try {
+      final file = File('${(await getExternalStorageDirectory())!.path}/book.json');
+      if (file.existsSync()) {
+        String jsonData = await file.readAsString();
+        return json.decode(jsonData);
+      } else {
+        // Jika file belum ada, kembalikan list kosong
+        return [];
+      }
+    } catch (e) {
+      // Handle errors, seperti file tidak ditemukan
+      return [];
     }
   }
 
   void groupDataByGenre() {
     groupedData.clear();
     for (var book in searchResults) {
-      String genre = book['genre'];
+      String genre = book['genre'] ?? 'Lainnya'; // Sesuaikan dengan struktur data sesuai kebutuhan
       if (!groupedData.containsKey(genre)) {
         groupedData[genre] = [];
       }
       groupedData[genre]!.add(book);
     }
+  }
+
+  void searchBooks(String query) {
+    setState(() {
+      searchResults = allData
+          .where((book) => book['nama_buku'].toLowerCase().contains(query.toLowerCase()))
+          .toList();
+      groupDataByGenre(); // Update groupedData based on searchResults
+    });
   }
 
   void navigateToBookDetailPage(dynamic book) {
@@ -66,64 +93,84 @@ class _DashboardAdminState extends State<DashboardAdmin> {
     );
   }
 
-  void onDeleteBook(dynamic book) {
-    setState(() {
-      allData.remove(book);
-      searchResults.remove(book); // Remove from searchResults as well
-      groupDataByGenre();
-    });
-
-    saveData();
-  }
-
   Future<void> saveData() async {
     try {
-      final file = File('${(await getExternalStorageDirectory())!.path}/data_pdf.json');
+      final file = File('${(await getExternalStorageDirectory())!.path}/book.json');
       await file.writeAsString(json.encode(allData));
     } catch (e) {
       print('Error saving data: $e');
     }
   }
 
-  void searchBooks(String query) {
-    setState(() {
-      searchResults = allData
-          .where((book) => book['nama_buku'].toLowerCase().contains(query.toLowerCase()))
-          .toList();
-      groupDataByGenre(); // Update groupedData based on searchResults
-    });
-  }
+  void onDeleteBook(dynamic book) {
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: Text('Hapus Buku'),
+        content: Text('Anda yakin ingin menghapus buku ini?'),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop(); // Tutup dialog
+            },
+            child: Text('Batal'),
+          ),
+          TextButton(
+            onPressed: () {
+              // Hapus buku dari daftar
+              setState(() {
+                allData.remove(book);
+                searchResults.remove(book); // Hapus dari searchResults juga
+                groupDataByGenre();
+              });
+
+              saveData(); // Simpan perubahan ke file
+
+              Navigator.of(context).pop(); // Tutup dialog
+            },
+            child: Text('Hapus'),
+          ),
+        ],
+      );
+    },
+  );
+}
+
+  // ... (kode lainnya)
 
   @override
-  Widget build(BuildContext context) {
+Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text('Dashboard Page'),
       ),
-      body: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 17, vertical: 10),
-            child: TextField(
-              controller: searchController,
-              decoration: InputDecoration(
-                enabledBorder: const OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.black)
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 17, vertical: 10),
+              child: TextField(
+                controller: searchController,
+                decoration: InputDecoration(
+                  enabledBorder: const OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.black),
+                  ),
+                  focusedBorder: const OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.black),
+                  ),
+                  fillColor: Colors.white,
+                  filled: true,
+                  hintText: "Cari Nama Buku",
                 ),
-                focusedBorder: const OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.black)
-                ),
-                fillColor: Colors.white,
-                filled: true,
-                hintText: "Cari Nama Buku",
+                onChanged: (query) {
+                  searchBooks(query);
+                },
               ),
-              onChanged: (query) {
-                searchBooks(query);
-              },
             ),
-          ),
-          Expanded(
-            child: ListView.builder(
+            ListView.builder(
+              shrinkWrap: true,
+              physics: NeverScrollableScrollPhysics(),
               itemCount: groupedData.keys.length,
               itemBuilder: (context, genreIndex) {
                 String currentGenre = groupedData.keys.elementAt(genreIndex);
@@ -166,13 +213,10 @@ class _DashboardAdminState extends State<DashboardAdmin> {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  ClipRRect(
-                                    borderRadius: BorderRadius.circular(8.0),
-                                    child: Image.asset(
-                                      books[bookIndex]['image_link'], 
-                                      fit: BoxFit.contain,
-                                      
-                                    ),
+                                  Image.file(
+                                    File(books[bookIndex]['image_link']),
+                                    fit: BoxFit.contain,
+                                    height: 100.0,
                                   ),
                                   Text(
                                     books[bookIndex]['nama_buku'],
@@ -181,9 +225,9 @@ class _DashboardAdminState extends State<DashboardAdmin> {
                                       fontSize: 16.0,
                                     ),
                                   ),
-                                  Text('Author: ${books[bookIndex]['Author']}'),
-                                  Text('Tahun: ${books[bookIndex]['Tahun']}'),
-                                  Text('Penerbit: ${books[bookIndex]['Penerbit']}'),
+                                  Text('Author: ${books[bookIndex]['Author'] ?? 'Tidak Tersedia'}'),
+                                  Text('Tahun: ${books[bookIndex]['Tahun'] ?? 'Tidak Tersedia'}'),
+                                  Text('Penerbit: ${books[bookIndex]['Penerbit'] ?? 'Tidak Tersedia'}'),
                                 ],
                               ),
                             ),
@@ -195,34 +239,13 @@ class _DashboardAdminState extends State<DashboardAdmin> {
                 );
               },
             ),
-          ),
-        ],
-      ),
-      bottomNavigationBar: BottomAppBar(
-        child: GestureDetector(
-          onTap: () { Navigator.pushReplacementNamed(context, '/upload_admin'); },
-          child: Container(
-            // margin: const EdgeInsets.symmetric(horizontal: 25),
-            decoration: BoxDecoration(
-              color: Colors.black,
-              borderRadius: BorderRadius.circular(8)
-              ),
-            child: const Center(
-              child: Text(
-                "Upload",
-                style: TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 16
-                  ),
-              ),
-            ),
-          ),
+          ],
         ),
       ),
     );
   }
 }
+
 
 class BookDetailPage extends StatelessWidget {
   final dynamic book;
