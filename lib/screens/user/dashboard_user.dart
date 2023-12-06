@@ -209,9 +209,9 @@ class _DashboardUserState extends State<DashboardUser> {
                                           ),
                                         ),
                                         SizedBox(height: 4.0), // Tambahkan spasi vertikal antara elemen
-                                        Text('Author: ${books[bookIndex]['Author']}'),
-                                        Text('Tahun: ${books[bookIndex]['Tahun']}'),
-                                        Text('Penerbit: ${books[bookIndex]['Penerbit']}'),
+                                        Text('Author: ${books[bookIndex]['Author'] ?? 'Tidak diketahui'}'),
+                                        Text('Tahun: ${books[bookIndex]['Tahun'] ?? 'Tidak diketahui'}'),
+                                        Text('Penerbit: ${books[bookIndex]['Penerbit'] ?? 'Tidak diketahui'}'),
                                         // Tambahkan teks lainnya sesuai kebutuhan
                                       ],
                                     ),

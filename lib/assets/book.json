@@ -1,110 +1,92 @@
 [
   {
-    "nama_buku": "Chainsaw Man",
-    "Author": "Menghadeh",
-    "Tahun": "2020",
-    "Penerbit": "Shonen Jump",
-    "pdf_link": "lib/assets/sample.pdf",
-    "genre": "Action",
-    "image_link": "lib/assets/gambar_sample.jpg"
-  },
-  {
-    "nama_buku": "Chainsaw Man 2",
-    "Author": "Menghadeh",
-    "Tahun": "2020",
-    "Penerbit": "Shonen Jump",
-    "pdf_link": "lib/assets/sample.pdf",
-    "genre": "Action",
-    "image_link": "lib/assets/gambar_sample.jpg"
-  },
-  {
-    "nama_buku": "Bahasa-Indonesia-BS-KLS-VII",
+    "nama_buku": "Bahasa Indonesia BS KLS VII",
     "Author": "",
     "Tahun": 0,
     "Penerbit": "",
-    "genre": "",
+    "genre": "Bahasa Indonesia",
     "image_link": "lib/assets/gambar1.jpg",
     "pdf_link": "lib/assets/Bahasa-Indonesia-BS-KLS-VII.pdf"
   },
   {
-    "nama_buku": "Bahasa-Inggris-BS-KLS-VIl",
+    "nama_buku": "Bahasa Inggris BS KLS VIl",
     "Author": "",
     "Tahun": 0,
     "Penerbit": "",
-    "genre": "",
-    "image_link": "lib/assets/gambar_sample.jpg",
+    "genre": "Bahasa Inggris",
+    "image_link": "lib/assets/gambar2.jpg",
     "pdf_link": "lib/assets/Bahasa-Inggris-BS-KLS-VIl.pdf"
   },
   {
-    "nama_buku": "Informatika-BS-KLS-VII",
+    "nama_buku": "Informatika BS KLS VII",
     "Author": "",
     "Tahun": 0,
     "Penerbit": "",
-    "genre": "",
-    "image_link": "lib/assets/gambar_sample.jpg",
+    "genre": "Informatika",
+    "image_link": "lib/assets/gambar3.jpg",
     "pdf_link": "lib/assets/Informatika-BS-KLS-VII.pdf"
   },
   {
-    "nama_buku": "IPA-BS-KLS-VII",
+    "nama_buku": "IPA BS KLS VII",
     "Author": "",
     "Tahun": 0,
     "Penerbit": "",
-    "genre": "",
-    "image_link": "lib/assets/gambar_sample.jpg",
+    "genre": "IPA (Ilmu Pengetahuan Alam)",
+    "image_link": "lib/assets/gambar4.jpg",
     "pdf_link": "lib/assets/IPA-BS-KLS-VII.pdf"
   },
   {
-    "nama_buku": "IPS-BS-KLS-VII",
+    "nama_buku": "IPS BS KLS VII",
     "Author": "",
     "Tahun": 0,
     "Penerbit": "",
-    "genre": "",
-    "image_link": "lib/assets/gambar_sample.jpg",
+    "genre": "IPS (Ilmu Pengetahuan Sosial)",
+    "image_link": "lib/assets/gambar5.jpg",
     "pdf_link": "lib/assets/IPS-BS-KLS-VII.pdf"
   },
   {
-    "nama_buku": "Islam-BS-KLS-VII",
+    "nama_buku": "Islam BS KLS VII",
     "Author": "",
     "Tahun": 0,
     "Penerbit": "",
-    "genre": "",
-    "image_link": "lib/assets/gambar_sample.jpg",
+    "genre": "Kepercayaan",
+    "image_link": "lib/assets/gambar6.jpg",
     "pdf_link": "lib/assets/Islam-BS-KLS-VII.pdf"
   },
   {
-    "nama_buku": "Kepercayaan-BS-KLS-VII",
+    "nama_buku": "Kepercayaan BS KLS VII",
     "Author": "",
     "Tahun": 0,
     "Penerbit": "",
-    "genre": "",
-    "image_link": "lib/assets/gambar_sample.jpg",
+    "genre": "Kepercayaan",
+    "image_link": "lib/assets/gambar7.jpg",
     "pdf_link": "lib/assets/Kepercayaan-BS-KLS-VII.pdf"
   },
   {
-    "nama_buku": "Matematika-BS-KLS-VII",
+    "nama_buku": "Matematika BS KLS VII",
     "Author": "",
     "Tahun": 0,
     "Penerbit": "",
-    "genre": "",
-    "image_link": "lib/assets/gambar_sample.jpg",
+    "genre": "Matematika",
+    "image_link": "lib/assets/gambar8.jpg",
     "pdf_link": "lib/assets/Matematika-BS-KLS-VII.pdf"
   },
   {
-    "nama_buku": "Matematika-BS-KLS-VII-Licensi",
+    "nama_buku": "Matematika BS KLS VII Licensi",
     "Author": "",
     "Tahun": 0,
     "Penerbit": "",
-    "genre": "",
-    "image_link": "lib/assets/gambar_sample.jpg",
+    "genre": "Matematika",
+    "image_link": "lib/assets/gambar9.jpg",
     "pdf_link": "lib/assets/Matematika-BS-KLS-VII-Licensi.pdf"
   },
   {
-    "nama_buku": "Pendidikan-Pancasila-BS-KLS-VII",
+    "nama_buku": "Pendidikan Pancasila BS KLS VII",
     "Author": "",
     "Tahun": 0,
     "Penerbit": "",
-    "genre": "",
-    "image_link": "lib/assets/gambar_sample.jpg",
+    "genre": "Pendidikan Pancasila",
+    "image_link": "lib/assets/gambar10.jpg",
     "pdf_link": "lib/assets/Pendidikan-Pancasila-BS-KLS-VII.pdf"
   }
 ]
