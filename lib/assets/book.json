@@ -1,170 +1,20 @@
 [
   {
     "nama_buku": "Chainsaw Man",
-    "author": "Menghadeh",
-    "tahun": "2020",
-    "penerbit": "Shonen Jump",
-    "pdf_link": "./pdf/sample.pdf",
-    "genre": "Action"
+    "Author": "Menghadeh",
+    "Tahun": "2020",
+    "Penerbit": "Shonen Jump",
+    "pdf_link": "lib/assets/sample.pdf",
+    "genre": "Action",
+    "image_link": "lib/assets/gambar_sample.jpg"
   },
   {
-    "nama_buku": "Chainsaw Man",
-    "author": "Menghadeh",
-    "tahun": "2020",
-    "penerbit": "Shonen Jump",
-    "pdf_link": "./pdf/sample.pdf",
-    "genre": "Action"
-  },
-  {
-    "nama_buku": "Chainsaw Man",
-    "author": "Menghadeh",
-    "tahun": "2020",
-    "penerbit": "Shonen Jump",
-    "pdf_link": "./pdf/sample.pdf",
-    "genre": "Action"
-  },
-  {
-    "nama_buku": "Chainsaw Man",
-    "author": "Menghadeh",
-    "tahun": "2020",
-    "penerbit": "Shonen Jump",
-    "pdf_link": "./pdf/sample.pdf",
-    "genre": "Action"
-  },
-  {
-    "nama_buku": "Chainsaw Man",
-    "author": "Menghadeh",
-    "tahun": "2020",
-    "penerbit": "Shonen Jump",
-    "pdf_link": "./pdf/sample.pdf",
-    "genre": "Action"
-  },
-  {
-    "nama_buku": "Chainsaw Man",
-    "author": "Menghadeh",
-    "tahun": "2020",
-    "penerbit": "Shonen Jump",
-    "pdf_link": "./pdf/sample.pdf",
-    "genre": "Action"
-  },
-  {
-    "nama_buku": "Chainsaw Man",
-    "author": "Menghadeh",
-    "tahun": "2020",
-    "penerbit": "Shonen Jump",
-    "pdf_link": "./pdf/sample.pdf",
-    "genre": "Pendidikan"
-  },
-  {
-    "nama_buku": "Chainsaw Man",
-    "author": "Menghadeh",
-    "tahun": "2020",
-    "penerbit": "Shonen Jump",
-    "pdf_link": "./pdf/sample.pdf",
-    "genre": "Pendidikan"
-  },
-  {
-    "nama_buku": "Chainsaw Man",
-    "author": "Menghadeh",
-    "tahun": "2020",
-    "penerbit": "Shonen Jump",
-    "pdf_link": "./pdf/sample.pdf",
-    "genre": "Pendidikan"
-  },
-  {
-    "nama_buku": "Chainsaw Man",
-    "author": "Menghadeh",
-    "tahun": "2020",
-    "penerbit": "Shonen Jump",
-    "pdf_link": "./pdf/sample.pdf",
-    "genre": "Pendidikan"
-  },
-  {
-    "nama_buku": "Chainsaw Man",
-    "author": "Menghadeh",
-    "tahun": "2020",
-    "penerbit": "Shonen Jump",
-    "pdf_link": "./pdf/sample.pdf",
-    "genre": "Pendidikan"
-  },
-  {
-    "nama_buku": "Chainsaw Man",
-    "author": "Menghadeh",
-    "tahun": "2020",
-    "penerbit": "Shonen Jump",
-    "pdf_link": "./pdf/sample.pdf",
-    "genre": "Pendidikan"
-  },
-  {
-    "nama_buku": "Chainsaw Man",
-    "author": "Menghadeh",
-    "tahun": "2020",
-    "penerbit": "Shonen Jump",
-    "pdf_link": "./pdf/sample.pdf",
-    "genre": "Ilmu Pengetahuan"
-  },
-  {
-    "nama_buku": "Chainsaw Man",
-    "author": "Menghadeh",
-    "tahun": "2020",
-    "penerbit": "Shonen Jump",
-    "pdf_link": "./pdf/sample.pdf",
-    "genre": "Ilmu Pengetahuan"
-  },
-  {
-    "nama_buku": "Chainsaw Man",
-    "author": "Menghadeh",
-    "tahun": "2020",
-    "penerbit": "Shonen Jump",
-    "pdf_link": "./pdf/sample.pdf",
-    "genre": "Ilmu Pengetahuan"
-  },
-  {
-    "nama_buku": "Chainsaw Man",
-    "author": "Menghadeh",
-    "tahun": "2020",
-    "penerbit": "Shonen Jump",
-    "pdf_link": "./pdf/sample.pdf",
-    "genre": "Ilmu Pengetahuan"
-  },
-  {
-    "nama_buku": "Chainsaw Man",
-    "author": "Menghadeh",
-    "tahun": "2020",
-    "penerbit": "Shonen Jump",
-    "pdf_link": "./pdf/sample.pdf",
-    "genre": "Ilmu Pengetahuan"
-  },
-  {
-    "nama_buku": "Chainsaw Man",
-    "author": "Menghadeh",
-    "tahun": "2020",
-    "penerbit": "Shonen Jump",
-    "pdf_link": "./pdf/sample.pdf",
-    "genre": "Gore"
-  },
-  {
-    "nama_buku": "Chainsaw Man",
-    "author": "Menghadeh",
-    "tahun": "2020",
-    "penerbit": "Shonen Jump",
-    "pdf_link": "./pdf/sample.pdf",
-    "genre": "Gore"
-  },
-  {
-    "nama_buku": "Chainsaw Man",
-    "author": "Menghadeh",
-    "tahun": "2020",
-    "penerbit": "Shonen Jump",
-    "pdf_link": "./pdf/sample.pdf",
-    "genre": "Gore"
-  },
-  {
-    "nama_buku": "Chainsaw Man",
-    "author": "Menghadeh",
-    "tahun": "2020",
-    "penerbit": "Shonen Jump",
-    "pdf_link": "./pdf/sample.pdf",
-    "genre": "Gore"
+    "nama_buku": "Chainsaw Man 2",
+    "Author": "Menghadeh",
+    "Tahun": "2020",
+    "Penerbit": "Shonen Jump",
+    "pdf_link": "lib/assets/sample.pdf",
+    "genre": "Action",
+    "image_link": "lib/assets/gambar_sample.jpg"
   }
 ]

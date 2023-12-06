@@ -1,6 +1,11 @@
 [
   {
-    "nama_buku": "Buku 1",
-    "pdf_link": "./sample.pdf"
+    "nama_buku": "Chainsaw Man",
+    "Author": "Menghadeh",
+    "Tahun": "2020",
+    "Penerbit": "Shonen Jump",
+    "pdf_link": "assets/pdf/sample.pdf",
+    "genre": "Action",
+    "image_link": "assets/images/gambar_sample.jpg"
   }
 ]

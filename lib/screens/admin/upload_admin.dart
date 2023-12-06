@@ -102,7 +102,16 @@ class _UploadPageAdminState extends State<UploadPageAdmin> {
       if (imagePath != null && pdfPath != null) {
         // Simpan data buku ke dalam file JSON
         await addToBookJson(imagePath!, pdfPath!);
-        print('File uploaded: $imagePath, $pdfPath');
+        setState(() {
+          titleController.text = '';
+          authorController.text = '';
+          yearController.text = '';
+          publisherController.text = '';
+          selectedGenre = 'Action';
+          pdfPath = null;
+          imagePath = null;
+        });
+        Navigator.pushReplacementNamed(context, '/dashboard_admin');
       } else {
         print('File not selected yet.');
       }
@@ -187,67 +196,86 @@ class _UploadPageAdminState extends State<UploadPageAdmin> {
         ),
         body: SafeArea(
           child: SingleChildScrollView( // Tambahkan widget SingleChildScrollView di sini
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SizedBox(height: 20),
-                UploadTextField(
-                  controller: titleController,
-                  hintText: "Masukkan Judul Buku",
-                  obscureText: true,
-                ),
-                SizedBox(height: 20),
-                UploadTextField(
-                  controller: authorController,
-                  hintText: "Masukkan Author Buku",
-                  obscureText: true,
-                ),
-                SizedBox(height: 20),
-                UploadTextField(
-                  controller: yearController,
-                  hintText: "Masukkan Tahun Rilis Buku",
-                  obscureText: true,
-                ),
-                SizedBox(height: 20),
-                UploadTextField(
-                  controller: publisherController,
-                  hintText: "Masukkan Publisher Buku",
-                  obscureText: true,
-                ),
-                SizedBox(height: 20),
-                DropdownButton<String>(
-                  value: selectedGenre,
-                  onChanged: (String? value) {
-                    setState(() {
-                      selectedGenre = value!;
-                    });
-                  },
-                  items: genres.map<DropdownMenuItem<String>>((String genre) {
-                    return DropdownMenuItem<String>(
-                      value: genre,
-                      child: Text(genre),
-                    );
-                  }).toList(),
-                  hint: Text('Select Genre'),
-                ),
-                SizedBox(height: 20),
-                ElevatedButton(
-                  onPressed: _pickImage,
-                  child: Text('Pick Image'),
-                ),
-                if (imagePath != null) Text('Image Path: $imagePath'),
-                SizedBox(height: 20),
-                ElevatedButton(
-                  onPressed: _pickPdf,
-                  child: Text('Pick PDF'),
-                ),
-                if (pdfPath != null) Text('PDF Path: $pdfPath'),
-                SizedBox(height: 20),
-                ElevatedButton(
-                  onPressed: _uploadFile,
-                  child: Text('Upload File'),
-                ),
-              ],
+            child: Container(
+              padding: EdgeInsets.symmetric(horizontal: 16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(height: 20),
+                  UploadTextField(
+                    controller: titleController,
+                    hintText: "Masukkan Judul Buku",
+                    obscureText: true,
+                  ),
+                  SizedBox(height: 20),
+                  UploadTextField(
+                    controller: authorController,
+                    hintText: "Masukkan Author Buku",
+                    obscureText: true,
+                  ),
+                  SizedBox(height: 20),
+                  UploadTextField(
+                    controller: yearController,
+                    hintText: "Masukkan Tahun Rilis Buku",
+                    obscureText: true,
+                  ),
+                  SizedBox(height: 20),
+                  UploadTextField(
+                    controller: publisherController,
+                    hintText: "Masukkan Publisher Buku",
+                    obscureText: true,
+                  ),
+                  SizedBox(height: 20),
+                  DropdownButton<String>(
+                    value: selectedGenre,
+                    onChanged: (String? value) {
+                      setState(() {
+                        selectedGenre = value!;
+                      });
+                    },
+                    items: genres.map<DropdownMenuItem<String>>((String genre) {
+                      return DropdownMenuItem<String>(
+                        value: genre,
+                        child: Text(genre),
+                      );
+                    }).toList(),
+                    hint: Text('Select Genre'),
+                  ),
+                  SizedBox(height: 20),
+                  ElevatedButton(
+                    onPressed: _pickImage,
+                    child: Text('Pick Image'),
+                  ),
+                  if (imagePath != null) Text('Image Path: $imagePath'),
+                  SizedBox(height: 20),
+                  ElevatedButton(
+                    onPressed: _pickPdf,
+                    child: Text('Pick PDF'),
+                  ),
+                  if (pdfPath != null) Text('PDF Path: $pdfPath'),
+                  SizedBox(height: 20),
+                  GestureDetector(
+                    onTap: () { _uploadFile(); },
+                    child: Container(
+                      padding: EdgeInsets.symmetric(vertical: 15),
+                      decoration: BoxDecoration(
+                        color: Colors.black,
+                        borderRadius: BorderRadius.circular(8)
+                        ),
+                      child: const Center(
+                        child: Text(
+                          "Upload",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16
+                            ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ),

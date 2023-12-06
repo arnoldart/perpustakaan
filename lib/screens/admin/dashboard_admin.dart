@@ -27,6 +27,10 @@ class _DashboardAdminState extends State<DashboardAdmin> {
     fetchData();
   }
 
+  void _logout(BuildContext context) {
+    Provider.of<AuthModel>(context, listen: false).isLoggedIn = false;
+  }
+
   Future<void> fetchData() async {
     try {
       // Baca data saat ini dari book.json
@@ -115,17 +119,50 @@ class _DashboardAdminState extends State<DashboardAdmin> {
 
   // ... (kode lainnya)
 
-@override
-Widget build(BuildContext context) {
+  @override
+  Widget build(BuildContext context) {
+    bool isLoggedIn = Provider.of<AuthModel>(context).isLoggedIn;
+
+    // Melakukan pengecekan status login
+    if (!isLoggedIn) {
+      // Jika belum login, kembali ke halaman login
+      Future.delayed(Duration.zero, () {
+        Navigator.pushReplacementNamed(context, '/auth');
+      });
+    }
     return Scaffold(
       appBar: AppBar(
         title: const Text('Dashboard'),
+        automaticallyImplyLeading: false,
         actions: [
           IconButton(
-            icon: const Icon(Icons.settings),
+            icon: Icon(Icons.logout),
             onPressed: () {
-              // Panggil fungsi logout
-              Navigator.pushReplacementNamed(context, '/setting_user');
+              // Tampilkan dialog konfirmasi logout
+              showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return AlertDialog(
+                    title: Text('Konfirmasi Logout'),
+                    content: Text('Apakah Anda yakin ingin logout?'),
+                    actions: [
+                      TextButton(
+                        onPressed: () {
+                          _logout(context);
+                        },
+                        child: Text('Iya'),
+                      ),
+                      TextButton(
+                        onPressed: () {
+                          // Jika tidak, tutup dialog
+                          Navigator.of(context).pop();
+                        },
+                        child: Text('Tidak'),
+                      ),
+                    ],
+                  );
+                },
+              );
             },
           ),
         ],
@@ -192,27 +229,36 @@ Widget build(BuildContext context) {
                                 ),
                                 borderRadius: BorderRadius.circular(8.0),
                               ),
-                              width: 150.0,
+                              width: 171.0,
                               margin: EdgeInsets.all(8.0),
-                              padding: EdgeInsets.all(10.0),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Image.file(
-                                    File(books[bookIndex]['image_link']),
-                                    fit: BoxFit.contain,
+                                  Image.asset(
+                                    books[bookIndex]['image_link'],
+                                    fit: BoxFit.cover,
                                     height: 100.0,
                                   ),
-                                  Text(
-                                    books[bookIndex]['nama_buku'],
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 16.0,
+                                  
+                                  Padding(
+                                    padding: EdgeInsets.all(10.0),
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          books[bookIndex]['nama_buku'],
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                        SizedBox(height: 4.0), // Tambahkan spasi vertikal antara elemen
+                                        Text('Author: ${books[bookIndex]['Author']}'),
+                                        Text('Tahun: ${books[bookIndex]['Tahun']}'),
+                                        Text('Penerbit: ${books[bookIndex]['Penerbit']}'),
+                                        // Tambahkan teks lainnya sesuai kebutuhan
+                                      ],
                                     ),
                                   ),
-                                  Text('Author: ${books[bookIndex]['Author'] ?? 'Tidak Tersedia'}'),
-                                  Text('Tahun: ${books[bookIndex]['Tahun'] ?? 'Tidak Tersedia'}'),
-                                  Text('Penerbit: ${books[bookIndex]['Penerbit'] ?? 'Tidak Tersedia'}'),
                                 ],
                               ),
                             ),
