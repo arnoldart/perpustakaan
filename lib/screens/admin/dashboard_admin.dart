@@ -105,6 +105,8 @@ class _DashboardAdminState extends State<DashboardAdmin> {
     });
 
     saveData();
+
+    Navigator.pushReplacementNamed(context, '/dashboard_admin');
   }
 
   Future<void> saveData() async {
@@ -234,8 +236,8 @@ class _DashboardAdminState extends State<DashboardAdmin> {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Image.asset(
-                                    books[bookIndex]['image_link'],
+                                  Image.file(
+                                    File(books[bookIndex]['image_link']),
                                     fit: BoxFit.cover,
                                     height: 100.0,
                                   ),

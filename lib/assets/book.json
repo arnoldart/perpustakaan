@@ -16,5 +16,95 @@
     "pdf_link": "lib/assets/sample.pdf",
     "genre": "Action",
     "image_link": "lib/assets/gambar_sample.jpg"
+  },
+  {
+    "nama_buku": "Bahasa-Indonesia-BS-KLS-VII",
+    "Author": "",
+    "Tahun": 0,
+    "Penerbit": "",
+    "genre": "",
+    "image_link": "lib/assets/gambar1.jpg",
+    "pdf_link": "lib/assets/Bahasa-Indonesia-BS-KLS-VII.pdf"
+  },
+  {
+    "nama_buku": "Bahasa-Inggris-BS-KLS-VIl",
+    "Author": "",
+    "Tahun": 0,
+    "Penerbit": "",
+    "genre": "",
+    "image_link": "lib/assets/gambar_sample.jpg",
+    "pdf_link": "lib/assets/Bahasa-Inggris-BS-KLS-VIl.pdf"
+  },
+  {
+    "nama_buku": "Informatika-BS-KLS-VII",
+    "Author": "",
+    "Tahun": 0,
+    "Penerbit": "",
+    "genre": "",
+    "image_link": "lib/assets/gambar_sample.jpg",
+    "pdf_link": "lib/assets/Informatika-BS-KLS-VII.pdf"
+  },
+  {
+    "nama_buku": "IPA-BS-KLS-VII",
+    "Author": "",
+    "Tahun": 0,
+    "Penerbit": "",
+    "genre": "",
+    "image_link": "lib/assets/gambar_sample.jpg",
+    "pdf_link": "lib/assets/IPA-BS-KLS-VII.pdf"
+  },
+  {
+    "nama_buku": "IPS-BS-KLS-VII",
+    "Author": "",
+    "Tahun": 0,
+    "Penerbit": "",
+    "genre": "",
+    "image_link": "lib/assets/gambar_sample.jpg",
+    "pdf_link": "lib/assets/IPS-BS-KLS-VII.pdf"
+  },
+  {
+    "nama_buku": "Islam-BS-KLS-VII",
+    "Author": "",
+    "Tahun": 0,
+    "Penerbit": "",
+    "genre": "",
+    "image_link": "lib/assets/gambar_sample.jpg",
+    "pdf_link": "lib/assets/Islam-BS-KLS-VII.pdf"
+  },
+  {
+    "nama_buku": "Kepercayaan-BS-KLS-VII",
+    "Author": "",
+    "Tahun": 0,
+    "Penerbit": "",
+    "genre": "",
+    "image_link": "lib/assets/gambar_sample.jpg",
+    "pdf_link": "lib/assets/Kepercayaan-BS-KLS-VII.pdf"
+  },
+  {
+    "nama_buku": "Matematika-BS-KLS-VII",
+    "Author": "",
+    "Tahun": 0,
+    "Penerbit": "",
+    "genre": "",
+    "image_link": "lib/assets/gambar_sample.jpg",
+    "pdf_link": "lib/assets/Matematika-BS-KLS-VII.pdf"
+  },
+  {
+    "nama_buku": "Matematika-BS-KLS-VII-Licensi",
+    "Author": "",
+    "Tahun": 0,
+    "Penerbit": "",
+    "genre": "",
+    "image_link": "lib/assets/gambar_sample.jpg",
+    "pdf_link": "lib/assets/Matematika-BS-KLS-VII-Licensi.pdf"
+  },
+  {
+    "nama_buku": "Pendidikan-Pancasila-BS-KLS-VII",
+    "Author": "",
+    "Tahun": 0,
+    "Penerbit": "",
+    "genre": "",
+    "image_link": "lib/assets/gambar_sample.jpg",
+    "pdf_link": "lib/assets/Pendidikan-Pancasila-BS-KLS-VII.pdf"
   }
 ]

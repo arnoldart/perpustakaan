@@ -192,7 +192,8 @@ class _DashboardUserState extends State<DashboardUser> {
                                 children: [
                                   Image.asset(
                                     books[bookIndex]['image_link'],
-                                    fit: BoxFit.cover,
+                                    fit: BoxFit.fill,
+                                    width: 171.0,
                                     height: 100.0,
                                   ),
                                   
