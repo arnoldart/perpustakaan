@@ -1,170 +1,92 @@
 [
   {
-    "nama_buku": "Chainsaw Man",
-    "author": "Menghadeh",
-    "tahun": "2020",
-    "penerbit": "Shonen Jump",
-    "pdf_link": "./pdf/sample.pdf",
-    "genre": "Action"
+    "nama_buku": "Bahasa Indonesia BS KLS VII",
+    "Author": "Rakhma Subarna",
+    "Tahun": 2021,
+    "Penerbit": "Pusat Kurikulum dan Perbukuan",
+    "genre": "Bahasa Indonesia",
+    "image_link": "lib/assets/gambar1.jpg",
+    "pdf_link": "lib/assets/Bahasa-Indonesia-BS-KLS-VII.pdf"
   },
   {
-    "nama_buku": "Chainsaw Man",
-    "author": "Menghadeh",
-    "tahun": "2020",
-    "penerbit": "Shonen Jump",
-    "pdf_link": "./pdf/sample.pdf",
-    "genre": "Action"
+    "nama_buku": "Bahasa Inggris BS KLS VIl",
+    "Author": "Ika Lestari Damayanti",
+    "Tahun": 2022,
+    "Penerbit": "Pusat Perbukuan",
+    "genre": "Bahasa Inggris",
+    "image_link": "lib/assets/gambar2.jpg",
+    "pdf_link": "lib/assets/Bahasa-Inggris-BS-KLS-VIl.pdf"
   },
   {
-    "nama_buku": "Chainsaw Man",
-    "author": "Menghadeh",
-    "tahun": "2020",
-    "penerbit": "Shonen Jump",
-    "pdf_link": "./pdf/sample.pdf",
-    "genre": "Action"
+    "nama_buku": "Informatika BS KLS VII",
+    "Author": "Maresha Caroline Wijanto",
+    "Tahun": 2021,
+    "Penerbit": "Pusat Kurikulum dan Perbukuan",
+    "genre": "Informatika",
+    "image_link": "lib/assets/gambar3.jpg",
+    "pdf_link": "lib/assets/Informatika-BS-KLS-VII.pdf"
   },
   {
-    "nama_buku": "Chainsaw Man",
-    "author": "Menghadeh",
-    "tahun": "2020",
-    "penerbit": "Shonen Jump",
-    "pdf_link": "./pdf/sample.pdf",
-    "genre": "Action"
+    "nama_buku": "IPA BS KLS VII",
+    "Author": "Victoriani Inabuy",
+    "Tahun": 2021,
+    "Penerbit": "Pusat Kurikulum dan Perbukuan",
+    "genre": "IPA (Ilmu Pengetahuan Alam)",
+    "image_link": "lib/assets/gambar4.jpg",
+    "pdf_link": "lib/assets/IPA-BS-KLS-VII.pdf"
   },
   {
-    "nama_buku": "Chainsaw Man",
-    "author": "Menghadeh",
-    "tahun": "2020",
-    "penerbit": "Shonen Jump",
-    "pdf_link": "./pdf/sample.pdf",
-    "genre": "Action"
+    "nama_buku": "IPS BS KLS VII",
+    "Author": "M. Nursa'ban",
+    "Tahun": 2021,
+    "Penerbit": "Pusat Kurikulum dan Perbukuan",
+    "genre": "IPS (Ilmu Pengetahuan Sosial)",
+    "image_link": "lib/assets/gambar5.jpg",
+    "pdf_link": "lib/assets/IPS-BS-KLS-VII.pdf"
   },
   {
-    "nama_buku": "Chainsaw Man",
-    "author": "Menghadeh",
-    "tahun": "2020",
-    "penerbit": "Shonen Jump",
-    "pdf_link": "./pdf/sample.pdf",
-    "genre": "Action"
+    "nama_buku": "Islam BS KLS VII",
+    "Author": "Rudi Ahmad Suryadi Sumiyati",
+    "Tahun":  2021,
+    "Penerbit": "Pusat Kurikulum dan Perbukuan",
+    "genre": "Kepercayaan",
+    "image_link": "lib/assets/gambar6.jpg",
+    "pdf_link": "lib/assets/Islam-BS-KLS-VII.pdf"
   },
   {
-    "nama_buku": "Chainsaw Man",
-    "author": "Menghadeh",
-    "tahun": "2020",
-    "penerbit": "Shonen Jump",
-    "pdf_link": "./pdf/sample.pdf",
-    "genre": "Pendidikan"
+    "nama_buku": "Kepercayaan BS KLS VII",
+    "Author": "Jaya Damanik",
+    "Tahun": 2021,
+    "Penerbit": "Pusat Kurikulum dan Perbukuan",
+    "genre": "Kepercayaan",
+    "image_link": "lib/assets/gambar7.jpg",
+    "pdf_link": "lib/assets/Kepercayaan-BS-KLS-VII.pdf"
   },
   {
-    "nama_buku": "Chainsaw Man",
-    "author": "Menghadeh",
-    "tahun": "2020",
-    "penerbit": "Shonen Jump",
-    "pdf_link": "./pdf/sample.pdf",
-    "genre": "Pendidikan"
+    "nama_buku": "Matematika BS KLS VII",
+    "Author": "Dicky Susanto",
+    "Tahun": 2022,
+    "Penerbit": "Pusat Perbukuan",
+    "genre": "Matematika",
+    "image_link": "lib/assets/gambar8.jpg",
+    "pdf_link": "lib/assets/Matematika-BS-KLS-VII.pdf"
   },
   {
-    "nama_buku": "Chainsaw Man",
-    "author": "Menghadeh",
-    "tahun": "2020",
-    "penerbit": "Shonen Jump",
-    "pdf_link": "./pdf/sample.pdf",
-    "genre": "Pendidikan"
+    "nama_buku": "Matematika BS KLS VII Licensi",
+    "Author": "Tim Gakko Tosho",
+    "Tahun":  2021,
+    "Penerbit": "Pusat Kurikulum dan Perbukuan",
+    "genre": "Matematika",
+    "image_link": "lib/assets/gambar9.jpg",
+    "pdf_link": "lib/assets/Matematika-BS-KLS-VII-Licensi.pdf"
   },
   {
-    "nama_buku": "Chainsaw Man",
-    "author": "Menghadeh",
-    "tahun": "2020",
-    "penerbit": "Shonen Jump",
-    "pdf_link": "./pdf/sample.pdf",
-    "genre": "Pendidikan"
-  },
-  {
-    "nama_buku": "Chainsaw Man",
-    "author": "Menghadeh",
-    "tahun": "2020",
-    "penerbit": "Shonen Jump",
-    "pdf_link": "./pdf/sample.pdf",
-    "genre": "Pendidikan"
-  },
-  {
-    "nama_buku": "Chainsaw Man",
-    "author": "Menghadeh",
-    "tahun": "2020",
-    "penerbit": "Shonen Jump",
-    "pdf_link": "./pdf/sample.pdf",
-    "genre": "Pendidikan"
-  },
-  {
-    "nama_buku": "Chainsaw Man",
-    "author": "Menghadeh",
-    "tahun": "2020",
-    "penerbit": "Shonen Jump",
-    "pdf_link": "./pdf/sample.pdf",
-    "genre": "Ilmu Pengetahuan"
-  },
-  {
-    "nama_buku": "Chainsaw Man",
-    "author": "Menghadeh",
-    "tahun": "2020",
-    "penerbit": "Shonen Jump",
-    "pdf_link": "./pdf/sample.pdf",
-    "genre": "Ilmu Pengetahuan"
-  },
-  {
-    "nama_buku": "Chainsaw Man",
-    "author": "Menghadeh",
-    "tahun": "2020",
-    "penerbit": "Shonen Jump",
-    "pdf_link": "./pdf/sample.pdf",
-    "genre": "Ilmu Pengetahuan"
-  },
-  {
-    "nama_buku": "Chainsaw Man",
-    "author": "Menghadeh",
-    "tahun": "2020",
-    "penerbit": "Shonen Jump",
-    "pdf_link": "./pdf/sample.pdf",
-    "genre": "Ilmu Pengetahuan"
-  },
-  {
-    "nama_buku": "Chainsaw Man",
-    "author": "Menghadeh",
-    "tahun": "2020",
-    "penerbit": "Shonen Jump",
-    "pdf_link": "./pdf/sample.pdf",
-    "genre": "Ilmu Pengetahuan"
-  },
-  {
-    "nama_buku": "Chainsaw Man",
-    "author": "Menghadeh",
-    "tahun": "2020",
-    "penerbit": "Shonen Jump",
-    "pdf_link": "./pdf/sample.pdf",
-    "genre": "Gore"
-  },
-  {
-    "nama_buku": "Chainsaw Man",
-    "author": "Menghadeh",
-    "tahun": "2020",
-    "penerbit": "Shonen Jump",
-    "pdf_link": "./pdf/sample.pdf",
-    "genre": "Gore"
-  },
-  {
-    "nama_buku": "Chainsaw Man",
-    "author": "Menghadeh",
-    "tahun": "2020",
-    "penerbit": "Shonen Jump",
-    "pdf_link": "./pdf/sample.pdf",
-    "genre": "Gore"
-  },
-  {
-    "nama_buku": "Chainsaw Man",
-    "author": "Menghadeh",
-    "tahun": "2020",
-    "penerbit": "Shonen Jump",
-    "pdf_link": "./pdf/sample.pdf",
-    "genre": "Gore"
+    "nama_buku": "Pendidikan Pancasila BS KLS VII",
+    "Author": "Yayat Suryatna",
+    "Tahun": 2021,
+    "Penerbit": "Kementerian Pendidikan, Kebudayaan, Riset, dan Teknologi",
+    "genre": "Pendidikan Pancasila",
+    "image_link": "lib/assets/gambar10.jpg",
+    "pdf_link": "lib/assets/Pendidikan-Pancasila-BS-KLS-VII.pdf"
   }
 ]

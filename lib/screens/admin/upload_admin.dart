@@ -14,25 +14,77 @@ class UploadPageAdmin extends StatefulWidget {
 }
 
 class _UploadPageAdminState extends State<UploadPageAdmin> {
-  final judulBukuController = TextEditingController();
-  final authorBukuController = TextEditingController();
-  final tahunBukuController = TextEditingController();
-  final penerbitBukuController = TextEditingController();
-
-  String selectedGenre = 'Action'; // Default genre
-
-   String? imagePath;
+  String? imagePath;
   String? pdfPath;
+
+  TextEditingController titleController = TextEditingController();
+  TextEditingController authorController = TextEditingController();
+  TextEditingController yearController = TextEditingController();
+  TextEditingController publisherController = TextEditingController();
+
+  String selectedGenre = 'Lainnya'; // Default genre
+
+  List<String> genres = [
+    "Bahasa Indonesia",
+    "Bahasa Inggris",
+    "Informatika",
+    "IPA (Ilmu Pengetahuan Alam)",
+    "IPS (Ilmu Pengetahuan Sosial)",
+    "Kepercayaan",
+    "Matematika",
+    "Pendidikan Pancasila",
+    "Lainnya"
+  ];
+
+  @override
+  void initState() {
+    super.initState();
+    // _checkAndRequestPermission();
+  }
+
+  // Future<void> _checkAndRequestPermission() async {
+  //   if (await Permission.storage.request().isGranted) {
+  //     // Izin diberikan, lakukan aksi yang memerlukan izin
+  //     print('Izin storage sudah diberikan');
+  //   } else {
+  //     // Jika belum diberikan, tampilkan dialog atau pesan untuk meminta izin
+  //     print('Izin storage belum diberikan');
+  //   }
+  // }
+
+  Future<String> copyFileToExternalStorage(String cacheFilePath, String folderName) async {
+    try {
+      Directory? externalDir = await getExternalStorageDirectory();
+      String perpustakaanDirPath = '${externalDir!.path}/$folderName';
+
+      // Buat folder perpustakaan jika belum ada
+      Directory(perpustakaanDirPath).createSync(recursive: true);
+
+      File cacheFile = File(cacheFilePath);
+      String destinationPath = '$perpustakaanDirPath/${cacheFile.uri.pathSegments.last}';
+
+      await cacheFile.copy(destinationPath);
+
+      return destinationPath;
+    } catch (e) {
+      print('Error copying file: $e');
+      return '';
+    }
+  }
 
   Future<void> _pickImage() async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
-      type: FileType.image,
+      type: FileType.custom,
+      allowedExtensions: ['jpg', 'jpeg', 'png'],
       allowMultiple: false,
     );
 
     if (result != null) {
+      String cacheImagePath = result.files.single.path!;
+      String externalImagePath = await copyFileToExternalStorage(cacheImagePath, 'images');
+
       setState(() {
-        imagePath = result.files.single.path;
+        imagePath = externalImagePath;
       });
     }
   }
@@ -45,28 +97,49 @@ class _UploadPageAdminState extends State<UploadPageAdmin> {
     );
 
     if (result != null) {
+      String cachePdfPath = result.files.single.path!;
+      String externalPdfPath = await copyFileToExternalStorage(cachePdfPath, 'pdfs');
+
       setState(() {
-        pdfPath = result.files.single.path;
+        pdfPath = externalPdfPath;
       });
     }
   }
 
-  Future<void> uploadData() async {
-    // Validasi untuk memastikan tidak ada TextField yang kosong
-    if (judulBukuController.text.isEmpty ||
-        authorBukuController.text.isEmpty ||
-        tahunBukuController.text.isEmpty ||
-        penerbitBukuController.text.isEmpty ||
-        imagePath == null ||
-        pdfPath == null) {
-      // Tampilkan pesan atau lakukan tindakan yang sesuai untuk memberi tahu pengguna
-      // bahwa semua field harus diisi
+  Future<void> _uploadFile() async {
+    if (_validateForm()) {
+      // Implementasi upload file ke server atau aksi lainnya
+      if (imagePath != null && pdfPath != null) {
+        // Simpan data buku ke dalam file JSON
+        await addToBookJson(imagePath!, pdfPath!);
+        setState(() {
+          titleController.text = '';
+          authorController.text = '';
+          yearController.text = '';
+          publisherController.text = '';
+          selectedGenre = 'Lainnya';
+          pdfPath = null;
+          imagePath = null;
+        });
+        Navigator.pushReplacementNamed(context, '/dashboard_admin');
+      } else {
+        print('File not selected yet.');
+      }
+    }
+  }
+
+  bool _validateForm() {
+    if (titleController.text.isEmpty ||
+        authorController.text.isEmpty ||
+        yearController.text.isEmpty ||
+        publisherController.text.isEmpty ||
+        selectedGenre.isEmpty) {
       showDialog(
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: Text('Peringatan'),
-            content: Text('Semua field harus diisi dan file gambar serta PDF harus dipilih.'),
+            title: Text('Form Validation'),
+            content: Text('Please fill in all fields.'),
             actions: [
               TextButton(
                 onPressed: () {
@@ -78,51 +151,39 @@ class _UploadPageAdminState extends State<UploadPageAdmin> {
           );
         },
       );
-      return;
+      return false;
     }
-
-    // Read existing data from data_pdf.json
-    List<dynamic> existingData = await fetchData();
-
-    // Add new data to the list
-    existingData.add({
-      "nama_buku": judulBukuController.text,
-      "Author": authorBukuController.text,
-      "Tahun": tahunBukuController.text,
-      "Penerbit": penerbitBukuController.text,
-      "pdf_link": pdfPath,
-      "image_link": imagePath,
-      "genre": selectedGenre,
-    });
-
-    // Save the updated data back to data_pdf.json
-    await saveData(existingData);
-
-    // Reset the text controllers and paths after uploading data
-    // judulBukuController.clear();
-    // authorBukuController.clear();
-    // tahunBukuController.clear();
-    // penerbitBukuController.clear();
-    // imagePath = null;
-    // pdfPath = null;
-
-    // You can add additional logic here, e.g., show a success message.
+    return true;
   }
 
-  Future<List<dynamic>> fetchData() async {
+  Future<void> addToBookJson(String imagePath, String pdfPath) async {
     try {
-      final file = File('${(await getExternalStorageDirectory())!.path}/data_pdf.json');
-      String data = await file.readAsString();
-      return json.decode(data);
-    } catch (e) {
-      // Handle errors, such as file not found
-      return [];
-    }
-  }
+      Directory? externalDir = await getExternalStorageDirectory();
+      String bookJsonPath = '${externalDir!.path}/book.json';
 
-  Future<void> saveData(List<dynamic> newData) async {
-    final file = File('${(await getExternalStorageDirectory())!.path}/data_pdf.json');
-    await file.writeAsString(jsonEncode(newData));
+      List<dynamic> jsonData = [];
+      if (File(bookJsonPath).existsSync()) {
+        // Baca data saat ini dari book.json
+        String jsonDataString = await File(bookJsonPath).readAsString();
+        jsonData = json.decode(jsonDataString);
+      }
+
+      // Tambahkan data buku baru
+      jsonData.add({
+        'image_link': imagePath,
+        'pdf_link': pdfPath,
+        'nama_buku': titleController.text,
+        'Author': authorController.text,
+        'Tahun': int.parse(yearController.text),
+        'Penerbit': publisherController.text,
+        'genre': selectedGenre,
+      });
+
+      // Simpan kembali ke dalam book.json
+      await File(bookJsonPath).writeAsString(json.encode(jsonData));
+    } catch (e) {
+      print('Error adding to book.json: $e');
+    }
   }
 
   @override
@@ -145,86 +206,101 @@ class _UploadPageAdminState extends State<UploadPageAdmin> {
         ),
         body: SafeArea(
           child: SingleChildScrollView( // Tambahkan widget SingleChildScrollView di sini
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SizedBox(height: 20),
-                UploadTextField(
-                  controller: judulBukuController,
-                  hintText: "Masukkan Judul Buku",
-                  obscureText: true,
-                ),
-                SizedBox(height: 20),
-                UploadTextField(
-                  controller: authorBukuController,
-                  hintText: "Masukkan Author Buku",
-                  obscureText: true,
-                ),
-                SizedBox(height: 20),
-                UploadTextField(
-                  controller: tahunBukuController,
-                  hintText: "Masukkan Tahun Terbit Buku",
-                  obscureText: true,
-                ),
-                SizedBox(height: 20),
-                UploadTextField(
-                  controller: penerbitBukuController,
-                  hintText: "Masukkan Penerbit Buku",
-                  obscureText: true,
-                ),
-                SizedBox(height: 20),
-                DropdownButton<String>(
-                  value: selectedGenre,
-                  onChanged: (String? newValue) {
-                    setState(() {
-                      selectedGenre = newValue!;
-                    });
-                  },
-                  items: <String>['Action', 'Pendidikan', 'Fiksi', 'Lainnya']
-                      .map<DropdownMenuItem<String>>((String value) {
-                    return DropdownMenuItem<String>(
-                      value: value,
-                      child: Text(value),
-                    );
-                  }).toList(),
-                ),
-                SizedBox(height: 20),
-                ElevatedButton(
-                  onPressed: _pickImage,
-                  child: Text('Pilih Gambar'),
-                ),
-                // if (imagePath != null) Text('Gambar terpilih: $imagePath'),
+            child: Container(
+              padding: EdgeInsets.symmetric(horizontal: 16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(height: 20),
+                  UploadTextField(
+                    controller: titleController,
+                    hintText: "Masukkan Judul Buku",
+                    obscureText: true,
+                  ),
+                  SizedBox(height: 20),
+                  UploadTextField(
+                    controller: authorController,
+                    hintText: "Masukkan Author Buku",
+                    obscureText: true,
+                  ),
+                  SizedBox(height: 20),
+                  TextField(
+                    controller: yearController,
+                    obscureText: false,
+                    keyboardType: TextInputType.number,
+                    onChanged: (value) {
+                      int? year = int.tryParse(value);
 
-                SizedBox(height: 20),
-                ElevatedButton(
-                  onPressed: _pickPdf,
-                  child: Text('Pilih PDF'),
-                ),
-                // if (pdfPath != null) Text('PDF terpilih: $pdfPath'),
-                SizedBox(height: 20),
-                GestureDetector(
-                  onTap: () {
-                    uploadData();
-                  },
-                  child: Container(
-                    padding: const EdgeInsets.all(25),
-                    decoration: BoxDecoration(
-                      color: Colors.black,
-                      borderRadius: BorderRadius.circular(8),
+                    },
+                    decoration: const InputDecoration(
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.black)
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.black)
+                      ),
+                      fillColor: Colors.white,
+                      filled: true,
+                      hintText: "Masukkan Tahun Rilis Buku",
                     ),
-                    child: const Center(
-                      child: Text(
-                        "Upload",
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 16,
+                  ),
+                  SizedBox(height: 20),
+                  UploadTextField(
+                    controller: publisherController,
+                    hintText: "Masukkan Publisher Buku",
+                    obscureText: true,
+                  ),
+                  SizedBox(height: 20),
+                  DropdownButton<String>(
+                    value: selectedGenre,
+                    onChanged: (String? value) {
+                      setState(() {
+                        selectedGenre = value!;
+                      });
+                    },
+                    items: genres.map<DropdownMenuItem<String>>((String genre) {
+                      return DropdownMenuItem<String>(
+                        value: genre,
+                        child: Text(genre),
+                      );
+                    }).toList(),
+                    hint: Text('Select Genre'),
+                  ),
+                  SizedBox(height: 20),
+                  ElevatedButton(
+                    onPressed: _pickImage,
+                    child: Text('Pick Image'),
+                  ),
+                  if (imagePath != null) Text('Image Path: $imagePath'),
+                  SizedBox(height: 20),
+                  ElevatedButton(
+                    onPressed: _pickPdf,
+                    child: Text('Pick PDF'),
+                  ),
+                  if (pdfPath != null) Text('PDF Path: $pdfPath'),
+                  SizedBox(height: 20),
+                  GestureDetector(
+                    onTap: () { _uploadFile(); },
+                    child: Container(
+                      padding: EdgeInsets.symmetric(vertical: 15),
+                      decoration: BoxDecoration(
+                        color: Colors.black,
+                        borderRadius: BorderRadius.circular(8)
+                        ),
+                      child: const Center(
+                        child: Text(
+                          "Upload",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16
+                            ),
                         ),
                       ),
                     ),
                   ),
-                )
-              ],
+                ],
+              ),
             ),
           ),
         ),

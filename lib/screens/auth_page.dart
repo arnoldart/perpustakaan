@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:perpustakaan/components/my_text_field.dart';
 import 'package:perpustakaan/models/auth_model.dart';
 import 'package:perpustakaan/models/user_data_model.dart';
+import 'package:perpustakaan/screens/user/dashboard_user.dart';
 import 'package:provider/provider.dart';
 
 class AuthPage extends StatelessWidget {
@@ -47,7 +48,7 @@ class AuthPage extends StatelessWidget {
       passwordController.clear();
 
       // ignore: use_build_context_synchronously
-      Navigator.pushReplacementNamed(context, '/dashboard_user');
+      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const DashboardUser()));
     }else {
       // ignore: use_build_context_synchronously
       showDialog(

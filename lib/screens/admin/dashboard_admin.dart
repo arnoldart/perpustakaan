@@ -13,12 +13,13 @@ class DashboardAdmin extends StatefulWidget {
   @override
   State<DashboardAdmin> createState() => _DashboardAdminState();
 }
-
 class _DashboardAdminState extends State<DashboardAdmin> {
   List<dynamic> allData = [];
   List<dynamic> searchResults = [];
   Map<String, List<dynamic>> groupedData = {};
   TextEditingController searchController = TextEditingController();
+
+  
 
   @override
   void initState() {
@@ -26,30 +27,60 @@ class _DashboardAdminState extends State<DashboardAdmin> {
     fetchData();
   }
 
+  void _logout(BuildContext context) {
+    Provider.of<AuthModel>(context, listen: false).isLoggedIn = false;
+  }
+
   Future<void> fetchData() async {
     try {
-      final file = File('${(await getExternalStorageDirectory())!.path}/data_pdf.json');
-      String jsonData = await file.readAsString();
+      // Baca data saat ini dari book.json
+      List<dynamic> jsonData = await fetchBookData();
+
       setState(() {
-        allData = json.decode(jsonData);
-        searchResults = List.from(allData); // Copy allData to searchResults initially
+        allData = jsonData;
+        searchResults = List.from(allData);
         groupDataByGenre();
       });
     } catch (e) {
-      // Handle errors, such as file not found
+      // Handle errors, seperti file tidak ditemukan
       print('Error fetching data: $e');
+    }
+  }
+
+  Future<List<dynamic>> fetchBookData() async {
+    try {
+      final file = File('${(await getExternalStorageDirectory())!.path}/book.json');
+      if (file.existsSync()) {
+        String jsonData = await file.readAsString();
+        return json.decode(jsonData);
+      } else {
+        // Jika file belum ada, kembalikan list kosong
+        return [];
+      }
+    } catch (e) {
+      // Handle errors, seperti file tidak ditemukan
+      return [];
     }
   }
 
   void groupDataByGenre() {
     groupedData.clear();
     for (var book in searchResults) {
-      String genre = book['genre'];
+      String genre = book['genre'] ?? 'Lainnya'; // Sesuaikan dengan struktur data sesuai kebutuhan
       if (!groupedData.containsKey(genre)) {
         groupedData[genre] = [];
       }
       groupedData[genre]!.add(book);
     }
+  }
+
+  void searchBooks(String query) {
+    setState(() {
+      searchResults = allData
+          .where((book) => book['nama_buku'].toLowerCase().contains(query.toLowerCase()))
+          .toList();
+      groupDataByGenre(); // Update groupedData based on searchResults
+    });
   }
 
   void navigateToBookDetailPage(dynamic book) {
@@ -74,56 +105,96 @@ class _DashboardAdminState extends State<DashboardAdmin> {
     });
 
     saveData();
+
+    Navigator.pushReplacementNamed(context, '/dashboard_admin');
   }
 
   Future<void> saveData() async {
     try {
-      final file = File('${(await getExternalStorageDirectory())!.path}/data_pdf.json');
+      final file = File('${(await getExternalStorageDirectory())!.path}/book.json');
       await file.writeAsString(json.encode(allData));
+      print('Data saved successfully.');
     } catch (e) {
       print('Error saving data: $e');
     }
   }
 
-  void searchBooks(String query) {
-    setState(() {
-      searchResults = allData
-          .where((book) => book['nama_buku'].toLowerCase().contains(query.toLowerCase()))
-          .toList();
-      groupDataByGenre(); // Update groupedData based on searchResults
-    });
-  }
+  // ... (kode lainnya)
 
   @override
   Widget build(BuildContext context) {
+    bool isLoggedIn = Provider.of<AuthModel>(context).isLoggedIn;
+
+    // Melakukan pengecekan status login
+    if (!isLoggedIn) {
+      // Jika belum login, kembali ke halaman login
+      Future.delayed(Duration.zero, () {
+        Navigator.pushReplacementNamed(context, '/auth');
+      });
+    }
     return Scaffold(
       appBar: AppBar(
-        title: Text('Dashboard Page'),
-      ),
-      body: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 17, vertical: 10),
-            child: TextField(
-              controller: searchController,
-              decoration: InputDecoration(
-                enabledBorder: const OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.black)
-                ),
-                focusedBorder: const OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.black)
-                ),
-                fillColor: Colors.white,
-                filled: true,
-                hintText: "Cari Nama Buku",
-              ),
-              onChanged: (query) {
-                searchBooks(query);
-              },
-            ),
+        title: const Text('Dashboard'),
+        automaticallyImplyLeading: false,
+        actions: [
+          IconButton(
+            icon: Icon(Icons.logout),
+            onPressed: () {
+              // Tampilkan dialog konfirmasi logout
+              showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return AlertDialog(
+                    title: Text('Konfirmasi Logout'),
+                    content: Text('Apakah Anda yakin ingin logout?'),
+                    actions: [
+                      TextButton(
+                        onPressed: () {
+                          _logout(context);
+                        },
+                        child: Text('Iya'),
+                      ),
+                      TextButton(
+                        onPressed: () {
+                          // Jika tidak, tutup dialog
+                          Navigator.of(context).pop();
+                        },
+                        child: Text('Tidak'),
+                      ),
+                    ],
+                  );
+                },
+              );
+            },
           ),
-          Expanded(
-            child: ListView.builder(
+        ],
+      ),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 17, vertical: 10),
+              child: TextField(
+                controller: searchController,
+                decoration: InputDecoration(
+                  enabledBorder: const OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.black),
+                  ),
+                  focusedBorder: const OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.black),
+                  ),
+                  fillColor: Colors.white,
+                  filled: true,
+                  hintText: "Cari Nama Buku",
+                ),
+                onChanged: (query) {
+                  searchBooks(query);
+                },
+              ),
+            ),
+            ListView.builder(
+              shrinkWrap: true,
+              physics: NeverScrollableScrollPhysics(),
               itemCount: groupedData.keys.length,
               itemBuilder: (context, genreIndex) {
                 String currentGenre = groupedData.keys.elementAt(genreIndex);
@@ -142,7 +213,7 @@ class _DashboardAdminState extends State<DashboardAdmin> {
                       ),
                     ),
                     Container(
-                      height: 250.0,
+                      height: 270.0,
                       padding: EdgeInsets.symmetric(horizontal: 10),
                       child: ListView.builder(
                         scrollDirection: Axis.horizontal,
@@ -160,30 +231,36 @@ class _DashboardAdminState extends State<DashboardAdmin> {
                                 ),
                                 borderRadius: BorderRadius.circular(8.0),
                               ),
-                              width: 150.0,
+                              width: 250,
                               margin: EdgeInsets.all(8.0),
-                              padding: EdgeInsets.all(10.0),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  ClipRRect(
-                                    borderRadius: BorderRadius.circular(8.0),
-                                    child: Image.asset(
-                                      books[bookIndex]['image_link'], 
-                                      fit: BoxFit.contain,
-                                      
+                                  Image.file(
+                                    File(books[bookIndex]['image_link']),
+                                    fit: BoxFit.contain,
+                                    width: 250,
+                                  ),
+                                  
+                                  Padding(
+                                    padding: EdgeInsets.all(10.0),
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          books[bookIndex]['nama_buku'],
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                        SizedBox(height: 4.0), // Tambahkan spasi vertikal antara elemen
+                                        Text('Author: ${books[bookIndex]['Author']}'),
+                                        Text('Tahun: ${books[bookIndex]['Tahun']}'),
+                                        Text('Penerbit: ${books[bookIndex]['Penerbit']}'),
+                                        // Tambahkan teks lainnya sesuai kebutuhan
+                                      ],
                                     ),
                                   ),
-                                  Text(
-                                    books[bookIndex]['nama_buku'],
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 16.0,
-                                    ),
-                                  ),
-                                  Text('Author: ${books[bookIndex]['Author']}'),
-                                  Text('Tahun: ${books[bookIndex]['Tahun']}'),
-                                  Text('Penerbit: ${books[bookIndex]['Penerbit']}'),
                                 ],
                               ),
                             ),
@@ -195,8 +272,8 @@ class _DashboardAdminState extends State<DashboardAdmin> {
                 );
               },
             ),
-          ),
-        ],
+          ],
+        ),
       ),
       bottomNavigationBar: BottomAppBar(
         child: GestureDetector(
@@ -223,6 +300,7 @@ class _DashboardAdminState extends State<DashboardAdmin> {
     );
   }
 }
+
 
 class BookDetailPage extends StatelessWidget {
   final dynamic book;
@@ -267,9 +345,7 @@ class BookDetailPage extends StatelessWidget {
           ),
         ],
       ),
-      body: SfPdfViewer.asset(
-        book['pdf_link'],
-      )
+      body: SfPdfViewer.file(File(book['pdf_link']))
     );
   }
 }
