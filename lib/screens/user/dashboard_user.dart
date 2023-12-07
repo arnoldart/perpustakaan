@@ -167,7 +167,7 @@ class _DashboardUserState extends State<DashboardUser> {
                       ),
                     ),
                     Container(
-                      height: 250.0,
+                      height: 270.0,
                       padding: EdgeInsets.symmetric(horizontal: 10),
                       child: ListView.builder(
                         scrollDirection: Axis.horizontal,
@@ -185,15 +185,15 @@ class _DashboardUserState extends State<DashboardUser> {
                                 ),
                                 borderRadius: BorderRadius.circular(8.0),
                               ),
-                              width: 171.0,
+                              width: 250,
                               margin: EdgeInsets.all(8.0),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Image.asset(
                                     books[bookIndex]['image_link'],
-                                    fit: BoxFit.fill,
-                                    width: 171.0,
+                                    fit: BoxFit.contain,
+                                    width: 250,
                                     height: 100.0,
                                   ),
                                   
