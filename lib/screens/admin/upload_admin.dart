@@ -121,7 +121,7 @@ class _UploadPageAdminState extends State<UploadPageAdmin> {
           pdfPath = null;
           imagePath = null;
         });
-        Navigator.pushReplacementNamed(context, '/dashboard_admin');
+        Navigator.pushNamedAndRemoveUntil(context, '/dashboard_admin', (route) => false);
       } else {
         print('File not selected yet.');
       }
@@ -201,8 +201,9 @@ class _UploadPageAdminState extends State<UploadPageAdmin> {
             onPressed: () {
               Navigator.pushReplacementNamed(context, '/dashboard_admin');
             },
-            icon: Icon(Icons.arrow_back_ios),
+            icon: Icon(Icons.arrow_back_ios, color: Colors.white,),
           ),
+          backgroundColor: Color(0xFF5271FF),
         ),
         body: SafeArea(
           child: SingleChildScrollView( // Tambahkan widget SingleChildScrollView di sini
@@ -284,7 +285,7 @@ class _UploadPageAdminState extends State<UploadPageAdmin> {
                     child: Container(
                       padding: EdgeInsets.symmetric(vertical: 15),
                       decoration: BoxDecoration(
-                        color: Colors.black,
+                        color: Color(0xFFFF3131),
                         borderRadius: BorderRadius.circular(8)
                         ),
                       child: const Center(

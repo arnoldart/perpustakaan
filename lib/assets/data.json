@@ -133,5 +133,5 @@
   {"id": 133, "username": "roges pernando", "password": "IXB", "role": "user"},
   {"id": 134, "username": "wulan putri", "password": "IXB", "role": "user"},
   {"id": 135, "username": "yolanda dwi n", "password": "IXB", "role": "user"},
-  {"id": 136, "username": "John", "password": "321", "role": "admin"}
+  {"id": 136, "username": "admin", "password": "admin", "role": "admin"}
 ]

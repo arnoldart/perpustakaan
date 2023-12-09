@@ -119,8 +119,6 @@ class _DashboardAdminState extends State<DashboardAdmin> {
     }
   }
 
-  // ... (kode lainnya)
-
   @override
   Widget build(BuildContext context) {
     bool isLoggedIn = Provider.of<AuthModel>(context).isLoggedIn;
@@ -129,16 +127,17 @@ class _DashboardAdminState extends State<DashboardAdmin> {
     if (!isLoggedIn) {
       // Jika belum login, kembali ke halaman login
       Future.delayed(Duration.zero, () {
-        Navigator.pushReplacementNamed(context, '/auth');
+        Navigator.pushNamedAndRemoveUntil(context, '/auth', (route) => false);
       });
     }
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Dashboard'),
+        title: const Text('Dashboard', style: TextStyle(color: Colors.white),),
         automaticallyImplyLeading: false,
+        backgroundColor: Color(0xFF5271FF),
         actions: [
           IconButton(
-            icon: Icon(Icons.logout),
+            icon: Icon(Icons.logout, color: Colors.white,),
             onPressed: () {
               // Tampilkan dialog konfirmasi logout
               showDialog(
@@ -169,119 +168,90 @@ class _DashboardAdminState extends State<DashboardAdmin> {
           ),
         ],
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 17, vertical: 10),
-              child: TextField(
-                controller: searchController,
-                decoration: InputDecoration(
-                  enabledBorder: const OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.black),
-                  ),
-                  focusedBorder: const OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.black),
-                  ),
-                  fillColor: Colors.white,
-                  filled: true,
-                  hintText: "Cari Nama Buku",
+      body: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 17, vertical: 10),
+            child: TextField(
+              controller: searchController,
+              decoration: InputDecoration(
+                enabledBorder: const OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.black),
                 ),
-                onChanged: (query) {
-                  searchBooks(query);
-                },
+                focusedBorder: const OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.black),
+                ),
+                fillColor: Colors.white,
+                filled: true,
+                hintText: "Cari Nama Buku",
               ),
+              onChanged: (query) {
+                searchBooks(query);
+              },
             ),
-            ListView.builder(
-              shrinkWrap: true,
-              physics: NeverScrollableScrollPhysics(),
-              itemCount: groupedData.keys.length,
-              itemBuilder: (context, genreIndex) {
-                String currentGenre = groupedData.keys.elementAt(genreIndex);
-                List<dynamic> books = groupedData[currentGenre]!;
-                return Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 17),
-                      child: Text(
-                        currentGenre,
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 18.0,
+          ),
+          Expanded(
+            child: ListView.builder(
+              itemCount: searchResults.length,
+              itemBuilder: (context, index) {
+                dynamic book = searchResults[index];
+                return SingleChildScrollView(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 5),
+                    child: GestureDetector(
+                      onTap: () {
+                        navigateToBookDetailPage(book);
+                      },
+                      child: Card(
+                        child: Container(
+                          margin: EdgeInsets.all(12),
+                          height: 150,
+                          child: Row(
+                            children: [
+                              Image.file(
+                                File(book['image_link'],),
+                                fit: BoxFit.fill,
+                                width: 100,
+                              ),
+                              SizedBox(width: 16),  // Beri jarak antara gambar dan teks
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      book['nama_buku'],  // Ganti dengan properti judul dari data buku
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 16,
+                                      ),
+                                      overflow: TextOverflow.ellipsis, maxLines: 1,
+                                    ),
+                                    Text('Author: ${book['Author']}'),
+                                    Text('Tahun: ${book['Tahun']}'),
+                                    Text('Penerbit: ${book['Penerbit']}', overflow: TextOverflow.ellipsis, maxLines: 1,),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ),
-                    Container(
-                      height: 270.0,
-                      padding: EdgeInsets.symmetric(horizontal: 10),
-                      child: ListView.builder(
-                        scrollDirection: Axis.horizontal,
-                        itemCount: books.length,
-                        itemBuilder: (context, bookIndex) {
-                          return GestureDetector(
-                            onTap: () {
-                              navigateToBookDetailPage(books[bookIndex]);
-                            },
-                            child: Container(
-                              decoration: BoxDecoration(
-                                border: Border.all(
-                                  color: Colors.black,
-                                  width: 1.0,
-                                ),
-                                borderRadius: BorderRadius.circular(8.0),
-                              ),
-                              width: 250,
-                              margin: EdgeInsets.all(8.0),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Image.file(
-                                    File(books[bookIndex]['image_link']),
-                                    fit: BoxFit.contain,
-                                    width: 250,
-                                  ),
-                                  
-                                  Padding(
-                                    padding: EdgeInsets.all(10.0),
-                                    child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          books[bookIndex]['nama_buku'],
-                                          style: TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
-                                        SizedBox(height: 4.0), // Tambahkan spasi vertikal antara elemen
-                                        Text('Author: ${books[bookIndex]['Author']}'),
-                                        Text('Tahun: ${books[bookIndex]['Tahun']}'),
-                                        Text('Penerbit: ${books[bookIndex]['Penerbit']}'),
-                                        // Tambahkan teks lainnya sesuai kebutuhan
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          );
-                        },
-                      ),
-                    ),
-                  ],
+                  ),
                 );
-              },
+              }
             ),
-          ],
-        ),
+          )
+        ],
       ),
+
       bottomNavigationBar: BottomAppBar(
         child: GestureDetector(
           onTap: () { Navigator.pushReplacementNamed(context, '/upload_admin'); },
           child: Container(
             // margin: const EdgeInsets.symmetric(horizontal: 25),
             decoration: BoxDecoration(
-              color: Colors.black,
+              color: Color(0xFFFF3131),
               borderRadius: BorderRadius.circular(8)
               ),
             child: const Center(
@@ -333,7 +303,6 @@ class BookDetailPage extends StatelessWidget {
                       TextButton(
                         onPressed: () {
                           onDelete();
-                          Navigator.of(context).pop(); // Pop to return to the dashboard
                         },
                         child: Text('Hapus'),
                       ),
