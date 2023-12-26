@@ -75,7 +75,7 @@ class AuthPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFF5271FF),
+      backgroundColor: const Color(0xFF5271FF),
       body: SafeArea(
         child: Center(
           child: Column(
@@ -101,7 +101,7 @@ class AuthPage extends StatelessWidget {
                   padding: const EdgeInsets.all(25),
                   margin: const EdgeInsets.symmetric(horizontal: 25),
                   decoration: BoxDecoration(
-                    color: Color(0xFFFF3131),
+                    color: const Color(0xFFFF3131),
                     borderRadius: BorderRadius.circular(8)
                     ),
                   child: const Center(

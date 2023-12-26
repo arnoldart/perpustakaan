@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:perpustakaan/models/auth_model.dart';
-import 'package:perpustakaan/models/pdf_data_model.dart';
 import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
@@ -43,6 +42,7 @@ class _DashboardAdminState extends State<DashboardAdmin> {
       });
     } catch (e) {
       // Handle errors, seperti file tidak ditemukan
+      // ignore: avoid_print
       print('Error fetching data: $e');
     }
   }
@@ -113,8 +113,10 @@ class _DashboardAdminState extends State<DashboardAdmin> {
     try {
       final file = File('${(await getExternalStorageDirectory())!.path}/book.json');
       await file.writeAsString(json.encode(allData));
+      // ignore: avoid_print
       print('Data saved successfully.');
     } catch (e) {
+      // ignore: avoid_print
       print('Error saving data: $e');
     }
   }
@@ -134,31 +136,31 @@ class _DashboardAdminState extends State<DashboardAdmin> {
       appBar: AppBar(
         title: const Text('Dashboard', style: TextStyle(color: Colors.white),),
         automaticallyImplyLeading: false,
-        backgroundColor: Color(0xFF5271FF),
+        backgroundColor: const Color(0xFF5271FF),
         actions: [
           IconButton(
-            icon: Icon(Icons.logout, color: Colors.white,),
+            icon: const Icon(Icons.logout, color: Colors.white,),
             onPressed: () {
               // Tampilkan dialog konfirmasi logout
               showDialog(
                 context: context,
                 builder: (BuildContext context) {
                   return AlertDialog(
-                    title: Text('Konfirmasi Logout'),
-                    content: Text('Apakah Anda yakin ingin logout?'),
+                    title: const Text('Konfirmasi Logout'),
+                    content: const Text('Apakah Anda yakin ingin logout?'),
                     actions: [
                       TextButton(
                         onPressed: () {
                           _logout(context);
                         },
-                        child: Text('Iya'),
+                        child: const Text('Iya'),
                       ),
                       TextButton(
                         onPressed: () {
                           // Jika tidak, tutup dialog
                           Navigator.of(context).pop();
                         },
-                        child: Text('Tidak'),
+                        child: const Text('Tidak'),
                       ),
                     ],
                   );
@@ -174,11 +176,11 @@ class _DashboardAdminState extends State<DashboardAdmin> {
             padding: const EdgeInsets.symmetric(horizontal: 17, vertical: 10),
             child: TextField(
               controller: searchController,
-              decoration: InputDecoration(
-                enabledBorder: const OutlineInputBorder(
+              decoration: const InputDecoration(
+                enabledBorder: OutlineInputBorder(
                   borderSide: BorderSide(color: Colors.black),
                 ),
-                focusedBorder: const OutlineInputBorder(
+                focusedBorder: OutlineInputBorder(
                   borderSide: BorderSide(color: Colors.black),
                 ),
                 fillColor: Colors.white,
@@ -204,7 +206,7 @@ class _DashboardAdminState extends State<DashboardAdmin> {
                       },
                       child: Card(
                         child: Container(
-                          margin: EdgeInsets.all(12),
+                          margin: const EdgeInsets.all(12),
                           height: 150,
                           child: Row(
                             children: [
@@ -213,14 +215,14 @@ class _DashboardAdminState extends State<DashboardAdmin> {
                                 fit: BoxFit.fill,
                                 width: 100,
                               ),
-                              SizedBox(width: 16),  // Beri jarak antara gambar dan teks
+                              const SizedBox(width: 16),  // Beri jarak antara gambar dan teks
                               Expanded(
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
                                       book['nama_buku'],  // Ganti dengan properti judul dari data buku
-                                      style: TextStyle(
+                                      style: const TextStyle(
                                         fontWeight: FontWeight.bold,
                                         fontSize: 16,
                                       ),
@@ -251,7 +253,7 @@ class _DashboardAdminState extends State<DashboardAdmin> {
           child: Container(
             // margin: const EdgeInsets.symmetric(horizontal: 25),
             decoration: BoxDecoration(
-              color: Color(0xFFFF3131),
+              color: const Color(0xFFFF3131),
               borderRadius: BorderRadius.circular(8)
               ),
             child: const Center(
@@ -276,7 +278,7 @@ class BookDetailPage extends StatelessWidget {
   final dynamic book;
   final VoidCallback onDelete;
 
-  BookDetailPage({required this.book, required this.onDelete});
+  const BookDetailPage({super.key, required this.book, required this.onDelete});
 
   @override
   Widget build(BuildContext context) {
@@ -285,26 +287,26 @@ class BookDetailPage extends StatelessWidget {
         title: Text(book['nama_buku']),
         actions: [
           IconButton(
-            icon: Icon(Icons.delete),
+            icon: const Icon(Icons.delete),
             onPressed: () {
               showDialog(
                 context: context,
                 builder: (BuildContext context) {
                   return AlertDialog(
-                    title: Text('Hapus Buku'),
-                    content: Text('Anda yakin ingin menghapus buku ini?'),
+                    title: const Text('Hapus Buku'),
+                    content: const Text('Anda yakin ingin menghapus buku ini?'),
                     actions: [
                       TextButton(
                         onPressed: () {
                           Navigator.of(context).pop();
                         },
-                        child: Text('Batal'),
+                        child: const Text('Batal'),
                       ),
                       TextButton(
                         onPressed: () {
                           onDelete();
                         },
-                        child: Text('Hapus'),
+                        child: const Text('Hapus'),
                       ),
                     ],
                   );

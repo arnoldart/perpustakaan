@@ -28,9 +28,9 @@ class MyApp extends StatelessWidget {
         routes: {
           '/auth': (context) => AuthPage(),
           // ADMIN
-          '/dashboard_admin': (context) => DashboardAdmin(),
+          '/dashboard_admin': (context) => const DashboardAdmin(),
           '/setting_admin': (context) => const SettingAdminPage(),
-          '/upload_admin': (context) => UploadPageAdmin(),
+          '/upload_admin': (context) => const UploadPageAdmin(),
           // USER
           '/dashboard_user': (context) => const DashboardUser(),
           '/setting_user': (context) => const SettingUserPage(),

@@ -28,7 +28,7 @@ class SettingUserPage extends StatelessWidget {
             onPressed: () {
               _logout(context);
             },
-            child: Text("Logout"),
+            child: const Text("Logout"),
           ),
         ),
       ),

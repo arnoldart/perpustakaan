@@ -67,6 +67,7 @@ class _UploadPageAdminState extends State<UploadPageAdmin> {
 
       return destinationPath;
     } catch (e) {
+      // ignore: avoid_print
       print('Error copying file: $e');
       return '';
     }
@@ -121,8 +122,10 @@ class _UploadPageAdminState extends State<UploadPageAdmin> {
           pdfPath = null;
           imagePath = null;
         });
+        // ignore: use_build_context_synchronously
         Navigator.pushNamedAndRemoveUntil(context, '/dashboard_admin', (route) => false);
       } else {
+        // ignore: avoid_print
         print('File not selected yet.');
       }
     }
@@ -138,14 +141,14 @@ class _UploadPageAdminState extends State<UploadPageAdmin> {
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: Text('Form Validation'),
-            content: Text('Please fill in all fields.'),
+            title: const Text('Form Validation'),
+            content: const Text('Please fill in all fields.'),
             actions: [
               TextButton(
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
-                child: Text('OK'),
+                child: const Text('OK'),
               ),
             ],
           );
@@ -182,6 +185,7 @@ class _UploadPageAdminState extends State<UploadPageAdmin> {
       // Simpan kembali ke dalam book.json
       await File(bookJsonPath).writeAsString(json.encode(jsonData));
     } catch (e) {
+      // ignore: avoid_print
       print('Error adding to book.json: $e');
     }
   }
@@ -201,35 +205,36 @@ class _UploadPageAdminState extends State<UploadPageAdmin> {
             onPressed: () {
               Navigator.pushReplacementNamed(context, '/dashboard_admin');
             },
-            icon: Icon(Icons.arrow_back_ios, color: Colors.white,),
+            icon: const Icon(Icons.arrow_back_ios, color: Colors.white,),
           ),
-          backgroundColor: Color(0xFF5271FF),
+          backgroundColor: const Color(0xFF5271FF),
         ),
         body: SafeArea(
           child: SingleChildScrollView( // Tambahkan widget SingleChildScrollView di sini
             child: Container(
-              padding: EdgeInsets.symmetric(horizontal: 16),
+              padding: const EdgeInsets.symmetric(horizontal: 16),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
                   UploadTextField(
                     controller: titleController,
                     hintText: "Masukkan Judul Buku",
                     obscureText: true,
                   ),
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
                   UploadTextField(
                     controller: authorController,
                     hintText: "Masukkan Author Buku",
                     obscureText: true,
                   ),
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
                   TextField(
                     controller: yearController,
                     obscureText: false,
                     keyboardType: TextInputType.number,
                     onChanged: (value) {
+                      // ignore: unused_local_variable
                       int? year = int.tryParse(value);
 
                     },
@@ -245,13 +250,13 @@ class _UploadPageAdminState extends State<UploadPageAdmin> {
                       hintText: "Masukkan Tahun Rilis Buku",
                     ),
                   ),
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
                   UploadTextField(
                     controller: publisherController,
                     hintText: "Masukkan Publisher Buku",
                     obscureText: true,
                   ),
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
                   DropdownButton<String>(
                     value: selectedGenre,
                     onChanged: (String? value) {
@@ -265,27 +270,27 @@ class _UploadPageAdminState extends State<UploadPageAdmin> {
                         child: Text(genre),
                       );
                     }).toList(),
-                    hint: Text('Select Genre'),
+                    hint: const Text('Select Genre'),
                   ),
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
                   ElevatedButton(
                     onPressed: _pickImage,
-                    child: Text('Pick Image'),
+                    child: const Text('Pick Image'),
                   ),
                   if (imagePath != null) Text('Image Path: $imagePath'),
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
                   ElevatedButton(
                     onPressed: _pickPdf,
-                    child: Text('Pick PDF'),
+                    child: const Text('Pick PDF'),
                   ),
                   if (pdfPath != null) Text('PDF Path: $pdfPath'),
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
                   GestureDetector(
                     onTap: () { _uploadFile(); },
                     child: Container(
-                      padding: EdgeInsets.symmetric(vertical: 15),
+                      padding: const EdgeInsets.symmetric(vertical: 15),
                       decoration: BoxDecoration(
-                        color: Color(0xFFFF3131),
+                        color: const Color(0xFFFF3131),
                         borderRadius: BorderRadius.circular(8)
                         ),
                       child: const Center(

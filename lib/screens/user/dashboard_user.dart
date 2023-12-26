@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:perpustakaan/models/auth_model.dart';
 import 'package:provider/provider.dart';
@@ -43,6 +42,7 @@ class _DashboardUserState extends State<DashboardUser> {
       });
     } catch (e) {
       // Handle errors, seperti file tidak ditemukan
+      // ignore: avoid_print
       print('Error fetching data: $e');
     }
   }
@@ -110,9 +110,9 @@ class _DashboardUserState extends State<DashboardUser> {
     try {
       final file = File('${(await getExternalStorageDirectory())!.path}/book.json');
       await file.writeAsString(json.encode(allData));
-      print('Data saved successfully.');
+      // print('Data saved successfully.');
     } catch (e) {
-      print('Error saving data: $e');
+      // print('Error saving data: $e');
     }
   }
   
@@ -130,33 +130,33 @@ class _DashboardUserState extends State<DashboardUser> {
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color(0xFF5271FF),
+        backgroundColor: const Color(0xFF5271FF),
         title: const Text('Dashboard', style: TextStyle(color: Colors.white),),
         automaticallyImplyLeading: false,
         actions: [
           IconButton(
-            icon: Icon(Icons.logout, color: Colors.white,),
+            icon: const Icon(Icons.logout, color: Colors.white,),
             onPressed: () {
               // Tampilkan dialog konfirmasi logout
               showDialog(
                 context: context,
                 builder: (BuildContext context) {
                   return AlertDialog(
-                    title: Text('Konfirmasi Logout'),
-                    content: Text('Apakah Anda yakin ingin logout?'),
+                    title: const Text('Konfirmasi Logout'),
+                    content: const Text('Apakah Anda yakin ingin logout?'),
                     actions: [
                       TextButton(
                         onPressed: () {
                           _logout(context);
                         },
-                        child: Text('Iya'),
+                        child: const Text('Iya'),
                       ),
                       TextButton(
                         onPressed: () {
                           // Jika tidak, tutup dialog
                           Navigator.of(context).pop();
                         },
-                        child: Text('Tidak'),
+                        child: const Text('Tidak'),
                       ),
                     ],
                   );
@@ -172,10 +172,10 @@ class _DashboardUserState extends State<DashboardUser> {
             padding: const EdgeInsets.symmetric(horizontal: 17, vertical: 10),
             child: TextField(
               controller: searchController,
-              decoration: InputDecoration(
-                enabledBorder: const OutlineInputBorder(
+              decoration: const InputDecoration(
+                enabledBorder: OutlineInputBorder(
                     borderSide: BorderSide(color: Colors.black)),
-                focusedBorder: const OutlineInputBorder(
+                focusedBorder: OutlineInputBorder(
                     borderSide: BorderSide(color: Colors.black)),
                 fillColor: Colors.white,
                 filled: true,
@@ -200,7 +200,7 @@ class _DashboardUserState extends State<DashboardUser> {
                       },
                       child: Card(
                         child: Container(
-                          margin: EdgeInsets.all(12),
+                          margin: const EdgeInsets.all(12),
                           // padding: EdgeInsets.all(12),
                           height: 150,
                           child: Row(
@@ -210,14 +210,14 @@ class _DashboardUserState extends State<DashboardUser> {
                                 fit: BoxFit.cover,
                                 width: 100,
                               ),
-                              SizedBox(width: 16),  // Beri jarak antara gambar dan teks
+                              const SizedBox(width: 16),  // Beri jarak antara gambar dan teks
                               Expanded(
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
                                       book['nama_buku'],  // Ganti dengan properti judul dari data buku
-                                      style: TextStyle(
+                                      style: const TextStyle(
                                         fontWeight: FontWeight.bold,
                                         fontSize: 16,
                                       ),
@@ -290,7 +290,7 @@ class _DashboardUserState extends State<DashboardUser> {
 class BookDetailPage extends StatelessWidget {
   final dynamic book;
 
-  BookDetailPage({required this.book});
+  const BookDetailPage({super.key, required this.book});
 
   @override
   Widget build(BuildContext context) {

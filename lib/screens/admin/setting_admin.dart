@@ -74,7 +74,7 @@ class _SettingAdminPageState extends State<SettingAdminPage> {
         leading: (
           IconButton(
             onPressed: () { Navigator.pushReplacementNamed(context, '/dashboard_admin'); }, 
-            icon: Icon(Icons.arrow_back_ios)
+            icon: const Icon(Icons.arrow_back_ios)
           )
         ),
       ),
@@ -84,7 +84,7 @@ class _SettingAdminPageState extends State<SettingAdminPage> {
             onPressed: () {
               _logout(context);
             },
-            child: Text("Logout"),
+            child: const Text("Logout"),
           ),
         ),
       ),
