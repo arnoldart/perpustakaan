@@ -29,3 +29,20 @@ jika belum menginstall flutter, dart dan android studio bisa menonton tutorialny
 | Model       | folder khusus menyimpan model dari suatu json file                   |
 | Components  | folder khusus menyimpan components seperti card, CustomButton dll    |
 | Screens     | folder khusus screen seperti HomePage, Dashboard dll                 |
+
+
+Q: Dimana pengaturan akunnya cara rubah admin dll
+
+A: bisa edit file data.json yang berada di dalam assets
+
+Q: Dimana buku/pdf disimpan?
+
+A: buku/pdf yang di upload akan masuk ke dalam folder bawaan aplikasi yang bernama com.perpustakaan lalu di dalamnya berisi folder images dan pdfs, lalu file yg terupload masuk ke directory tadi dan ditulis path/data nya kedalam file book.json
+
+Q: Dimana code upload PDF nya?
+
+A: Code tersebut berada di dalam folder lib/screen/upload_admin.dart
+
+Q: Dimana render PDFnya?
+
+A: Pdf tersebut terender didalam dashboard_admin.dart/dashboard_user.dart
