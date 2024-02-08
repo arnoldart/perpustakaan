@@ -5,6 +5,7 @@ import 'package:perpustakaan/screens/admin/dashboard_admin.dart';
 import 'package:perpustakaan/screens/admin/setting_admin.dart';
 import 'package:perpustakaan/screens/admin/upload_admin.dart';
 import 'package:perpustakaan/screens/auth_page.dart';
+import 'package:perpustakaan/screens/onBoarding/on_Boarding.dart';
 import 'package:perpustakaan/screens/user/dashboard_user.dart';
 import 'package:perpustakaan/screens/user/setting_admin.dart';
 import 'package:provider/provider.dart';
@@ -24,8 +25,9 @@ class MyApp extends StatelessWidget {
       create: (context) => AuthModel(),
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        home: AuthPage(),
+        home: OnBoarding(),
         routes: {
+          '/on_boarding': (context) => const OnBoarding(),
           '/auth': (context) => AuthPage(),
           // ADMIN
           '/dashboard_admin': (context) => const DashboardAdmin(),
