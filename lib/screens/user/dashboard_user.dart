@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:perpustakaan/components/custom_expansiontile.dart';
 import 'package:perpustakaan/models/auth_model.dart';
 import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
@@ -19,6 +20,7 @@ class _DashboardUserState extends State<DashboardUser> {
   List<dynamic> searchResults = [];
   Map<String, List<dynamic>> groupedData = {};
   TextEditingController searchController = TextEditingController();
+  List<String> selectedCategories = [];
 
   @override
   void initState() {
@@ -26,7 +28,7 @@ class _DashboardUserState extends State<DashboardUser> {
     fetchData();
   }
 
-   void _logout(BuildContext context) {
+  void _logout(BuildContext context) {
     Provider.of<AuthModel>(context, listen: false).isLoggedIn = false;
   }
 
@@ -49,7 +51,8 @@ class _DashboardUserState extends State<DashboardUser> {
 
   Future<List<dynamic>> fetchBookData() async {
     try {
-      final file = File('${(await getExternalStorageDirectory())!.path}/book.json');
+      final file =
+          File('${(await getExternalStorageDirectory())!.path}/book.json');
       if (file.existsSync()) {
         String jsonData = await file.readAsString();
         return json.decode(jsonData);
@@ -66,7 +69,8 @@ class _DashboardUserState extends State<DashboardUser> {
   void groupDataByGenre() {
     groupedData.clear();
     for (var book in searchResults) {
-      String genre = book['genre'] ?? 'Lainnya'; // Sesuaikan dengan struktur data sesuai kebutuhan
+      String genre = book['genre'] ??
+          'Lainnya'; // Sesuaikan dengan struktur data sesuai kebutuhan
       if (!groupedData.containsKey(genre)) {
         groupedData[genre] = [];
       }
@@ -77,7 +81,8 @@ class _DashboardUserState extends State<DashboardUser> {
   void searchBooks(String query) {
     setState(() {
       searchResults = allData
-          .where((book) => book['nama_buku'].toLowerCase().contains(query.toLowerCase()))
+          .where((book) =>
+              book['nama_buku'].toLowerCase().contains(query.toLowerCase()))
           .toList();
       groupDataByGenre(); // Update groupedData based on searchResults
     });
@@ -108,14 +113,29 @@ class _DashboardUserState extends State<DashboardUser> {
 
   Future<void> saveData() async {
     try {
-      final file = File('${(await getExternalStorageDirectory())!.path}/book.json');
+      final file =
+          File('${(await getExternalStorageDirectory())!.path}/book.json');
       await file.writeAsString(json.encode(allData));
       // print('Data saved successfully.');
     } catch (e) {
       // print('Error saving data: $e');
     }
   }
-  
+
+  List<dynamic> filterBooksBySelectedCategories() {
+    // Jika tidak ada genre yang dipilih, tampilkan semua buku
+    if (selectedCategories.isEmpty) {
+      return List.from(allData);
+    } else {
+      // Filter buku berdasarkan genre yang dipilih
+      List<dynamic> filteredBooks = [];
+      for (var genre in selectedCategories) {
+        filteredBooks.addAll(groupedData[genre] ?? []);
+      }
+      return filteredBooks.toSet().toList(); // Menghapus duplikat
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     bool isLoggedIn = Provider.of<AuthModel>(context).isLoggedIn;
@@ -129,13 +149,94 @@ class _DashboardUserState extends State<DashboardUser> {
     }
 
     return Scaffold(
+      drawer: Drawer(
+          child: ListView(
+        padding: EdgeInsets.zero,
+        children: [
+          const DrawerHeader(
+            decoration: BoxDecoration(
+              color: Color(0xFF5271FF),
+            ),
+            child: Text(
+              'Perpustakaan',
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 24,
+              ),
+            ),
+          ),
+          ListTile(
+            title: const Text('List Buku'),
+            onTap: () {
+              Navigator.pushReplacementNamed(context, '/list_buku_user');
+            },
+          ),
+          ListTile(
+            title: const Text('Lokasi'),
+            onTap: () {
+              Navigator.pushReplacementNamed(context, '/lokasi_user');
+            },
+          ),
+          const Divider(),
+          Column(
+            children: [
+              CustomExpansionTile(
+                title:
+                    const Text('Kategori Buku', style: TextStyle(fontSize: 16)),
+                children: [
+                  for (var genre in groupedData.keys)
+                    GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          // Jika genre yang sedang aktif ditekan lagi, hapus filter
+                          if (selectedCategories.contains(genre)) {
+                            selectedCategories.remove(genre);
+                            if (selectedCategories.isEmpty) {
+                              searchResults = List.from(allData);
+                            } else {
+                              searchResults = filterBooksBySelectedCategories();
+                            }
+                          } else {
+                            // Jika tidak, filter buku berdasarkan genre yang dipilih
+                            selectedCategories.clear();
+                            selectedCategories.add(genre);
+                            searchResults = filterBooksBySelectedCategories();
+                          }
+                        });
+                      },
+                      child: ListTile(
+                        title: Text(
+                          genre,
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: selectedCategories.contains(genre)
+                                ? FontWeight.bold
+                                : FontWeight.normal,
+                            color: selectedCategories.contains(genre)
+                                ? Colors.blue
+                                : Colors.black,
+                          ),
+                        ),
+                      ),
+                    ),
+                ],
+              ),
+            ],
+          )
+        ],
+      )),
       appBar: AppBar(
         backgroundColor: const Color(0xFF5271FF),
-        title: const Text('Dashboard', style: TextStyle(color: Colors.white),),
-        automaticallyImplyLeading: false,
+        title: const Text(
+          'Dashboard',
+          style: TextStyle(color: Colors.white),
+        ),
         actions: [
           IconButton(
-            icon: const Icon(Icons.logout, color: Colors.white,),
+            icon: const Icon(
+              Icons.logout,
+              color: Colors.white,
+            ),
             onPressed: () {
               // Tampilkan dialog konfirmasi logout
               showDialog(
@@ -165,6 +266,16 @@ class _DashboardUserState extends State<DashboardUser> {
             },
           ),
         ],
+        leading: Builder(
+          builder: (BuildContext context) {
+            return IconButton(
+              onPressed: () {
+                Scaffold.of(context).openDrawer();
+              },
+              icon: const Icon(Icons.menu, color: Colors.white),
+            );
+          },
+        ),
       ),
       body: Column(
         children: [
@@ -188,104 +299,72 @@ class _DashboardUserState extends State<DashboardUser> {
           ),
           Expanded(
             child: ListView.builder(
-              itemCount: searchResults.length,
-              itemBuilder: (context, index) {
-                dynamic book = searchResults[index];
-                return SingleChildScrollView(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 5),
-                    child: GestureDetector(
-                      onTap: () {
-                        navigateToBookDetailPage(book);
-                      },
-                      child: Card(
-                        child: Container(
-                          margin: const EdgeInsets.all(12),
-                          // padding: EdgeInsets.all(12),
-                          height: 150,
-                          child: Row(
-                            children: [
-                              Image.file(
-                                File(book['image_link']),
-                                fit: BoxFit.cover,
-                                width: 100,
-                              ),
-                              const SizedBox(width: 16),  // Beri jarak antara gambar dan teks
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      book['nama_buku'],  // Ganti dengan properti judul dari data buku
-                                      style: const TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 16,
-                                      ),
-                                      overflow: TextOverflow.ellipsis, maxLines: 1,
-                                    ),
-                                    Text('Author: ${book['Author']}'),
-                                    Text('Tahun: ${book['Tahun']}'),
-                                    Text('Penerbit: ${book['Penerbit']}', overflow: TextOverflow.ellipsis, maxLines: 1,),
-                                  ],
+                itemCount: searchResults.length,
+                itemBuilder: (context, index) {
+                  dynamic book = searchResults[index];
+                  return SingleChildScrollView(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 14, vertical: 5),
+                      child: GestureDetector(
+                        onTap: () {
+                          navigateToBookDetailPage(book);
+                        },
+                        child: Card(
+                          child: Container(
+                            margin: const EdgeInsets.all(12),
+                            // padding: EdgeInsets.all(12),
+                            height: 150,
+                            child: Row(
+                              children: [
+                                Image.file(
+                                  File(book['image_link']),
+                                  fit: BoxFit.cover,
+                                  width: 100,
                                 ),
-                              ),
-                            ],
+                                const SizedBox(
+                                    width:
+                                        16), // Beri jarak antara gambar dan teks
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        book[
+                                            'nama_buku'], // Ganti dengan properti judul dari data buku
+                                        style: const TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 16,
+                                        ),
+                                        overflow: TextOverflow.ellipsis,
+                                        maxLines: 1,
+                                      ),
+                                      Text('Author: ${book['Author']}'),
+                                      Text('Tahun: ${book['Tahun']}'),
+                                      Text(
+                                        'Penerbit: ${book['Penerbit']}',
+                                        overflow: TextOverflow.ellipsis,
+                                        maxLines: 1,
+                                      ),
+                                      Text('Kategori: ${book['genre']}'),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                       ),
                     ),
-                  ),
-                );
-              }
-            ),
+                  );
+                }),
           )
-
-          // Expanded(
-          //   child: ListView.builder(
-          //     itemCount: searchResults.length,
-          //     itemBuilder: (context, index) {
-          //       dynamic book = searchResults[index];
-          //       return Card(
-          //         margin: EdgeInsets.symmetric(horizontal: 17, vertical: 10),
-          //         child: ListTile(
-          //           contentPadding: EdgeInsets.all(8.0),
-          //           leading: SizedBox(
-          //             width: 100.0, // Set the width according to your needs
-          //             height: double.infinity,
-          //             child: Image.asset(
-          //               book['image_link'],
-          //               fit: BoxFit.cover,
-          //             ),
-          //           ),
-          //           title: Text(
-          //             book['nama_buku'],
-          //             style: TextStyle(
-          //               fontWeight: FontWeight.bold,
-          //             ),
-          //           ),
-          //           subtitle: Column(
-          //             crossAxisAlignment: CrossAxisAlignment.start,
-          //             children: [
-          //               Text('Author: ${book['Author']}'),
-          //               Text('Tahun: ${book['Tahun']}'),
-          //               Text('Penerbit: ${book['Penerbit']}'),
-          //               // Tambahkan teks lainnya sesuai kebutuhan
-          //             ],
-          //           ),
-          //           onTap: () {
-          //             navigateToBookDetailPage(book);
-          //           },
-          //         ),
-          //       );
-          //     },
-          //   ),
-          // ),
         ],
       ),
     );
   }
 }
-
 
 class BookDetailPage extends StatelessWidget {
   final dynamic book;
@@ -295,11 +374,9 @@ class BookDetailPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(book['nama_buku']),
-      ),
-      body: SfPdfViewer.file(File(book['pdf_link']))
-    );
+        appBar: AppBar(
+          title: Text(book['nama_buku']),
+        ),
+        body: SfPdfViewer.file(File(book['pdf_link'])));
   }
 }
-

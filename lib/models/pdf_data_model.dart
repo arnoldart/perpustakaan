@@ -29,6 +29,4 @@ class PdfData {
       role: json['role'],
     );
   }
-
 }
-

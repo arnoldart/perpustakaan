@@ -16,7 +16,6 @@ class _SettingAdminPageState extends State<SettingAdminPage> {
 
   @override
   Widget build(BuildContext context) {
-    
     bool isLoggedIn = Provider.of<AuthModel>(context).isLoggedIn;
 
     // Melakukan pengecekan status login
@@ -29,20 +28,21 @@ class _SettingAdminPageState extends State<SettingAdminPage> {
 
     return Scaffold(
       appBar: AppBar(
-        leading: (
-          IconButton(
-            onPressed: () { Navigator.pushReplacementNamed(context, '/dashboard_admin'); }, 
-            icon: const Icon(Icons.arrow_back_ios)
-          )
-        ),
-      ),
-      body: Center(
-        child: Center(
-          child: ElevatedButton(
+        leading: (IconButton(
             onPressed: () {
-              _logout(context);
+              Navigator.pushReplacementNamed(context, '/dashboard_admin');
             },
-            child: const Text("Logout"),
+            icon: const Icon(Icons.arrow_back_ios))),
+      ),
+      body: SafeArea(
+        child: Center(
+          child: Center(
+            child: ElevatedButton(
+              onPressed: () {
+                _logout(context);
+              },
+              child: const Text("Logout"),
+            ),
           ),
         ),
       ),

@@ -1,7 +1,9 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:perpustakaan/components/my_text_field.dart';
 import 'package:perpustakaan/models/auth_model.dart';
 import 'package:perpustakaan/models/user_data_model.dart';
@@ -16,22 +18,59 @@ class AuthPage extends StatelessWidget {
   final passwordController = TextEditingController();
 
   // Sign User in Method
-  Future<List<UserData>> fetchData() async {
+  Future<List<UserData>> fetchDataFromApp() async {
     String jsonString = await rootBundle.loadString('lib/assets/data.json');
     List<dynamic> jsonList = json.decode(jsonString);
 
-    List<UserData> userList = jsonList.map((json) => UserData.fromJson(json)).toList();
+    List<UserData> userList =
+        jsonList.map((json) => UserData.fromJson(json)).toList();
 
     return userList;
   }
 
+  Future<List<dynamic>> fetchDataUserFromInternal() async {
+    try {
+      List<dynamic> jsonData = await fetchUserDataFromInternal();
+
+      List<dynamic> userList =
+          jsonData.map((json) => UserData.fromJson(json)).toList();
+
+      return userList;
+    } catch (e) {
+      // ignore: avoid_print
+      print('Error fetching data: $e');
+      return []; // Handle errors gracefully
+    }
+  }
+
+  Future<List<dynamic>> fetchUserDataFromInternal() async {
+    try {
+      final file =
+          File('${(await getExternalStorageDirectory())!.path}/user.json');
+      if (file.existsSync()) {
+        String jsonData = await file.readAsString();
+        return json.decode(jsonData);
+      } else {
+        // Jika file belum ada, kembalikan list kosong
+        return [];
+      }
+    } catch (e) {
+      // Handle errors, seperti file tidak ditemukan
+      return [];
+    }
+  }
+
   void signInUser(BuildContext context) async {
-    List<UserData> userList = await fetchData();
+    List<UserData> userList = await fetchDataFromApp();
+    List<dynamic> userInternalList = await fetchDataUserFromInternal();
 
     String enteredUsername = usernameController.text;
     String enteredPassword = passwordController.text;
 
-    if(userList.any((user) =>  user.username == enteredUsername && user.password == enteredPassword && user.role == 'admin' )) {
+    if (userList.any((user) =>
+        user.username == enteredUsername &&
+        user.password == enteredPassword &&
+        user.role == 'admin')) {
       // ignore: use_build_context_synchronously
       Provider.of<AuthModel>(context, listen: false).isLoggedIn = true;
 
@@ -40,7 +79,10 @@ class AuthPage extends StatelessWidget {
 
       // ignore: use_build_context_synchronously
       Navigator.pushReplacementNamed(context, '/dashboard_admin');
-    }else if(userList.any((user) =>  user.username == enteredUsername && user.password == enteredPassword && user.role == 'user' )) {
+    } else if (userList.any((user) =>
+        user.username == enteredUsername &&
+        user.password == enteredPassword &&
+        user.role == 'user')) {
       // ignore: use_build_context_synchronously
       Provider.of<AuthModel>(context, listen: false).isLoggedIn = true;
 
@@ -48,8 +90,21 @@ class AuthPage extends StatelessWidget {
       passwordController.clear();
 
       // ignore: use_build_context_synchronously
-      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const DashboardUser()));
-    }else {
+      Navigator.pushReplacement(context,
+          MaterialPageRoute(builder: (context) => const DashboardUser()));
+    } else if (userInternalList.any((user) =>
+        user.username == enteredUsername &&
+        user.password == enteredPassword &&
+        user.role == 'user')) {
+      // ignore: use_build_context_synchronously
+      Provider.of<AuthModel>(context, listen: false).isLoggedIn = true;
+
+      usernameController.clear();
+      passwordController.clear();
+
+      // ignore: use_build_context_synchronously
+      Navigator.pushReplacementNamed(context, '/dashboard_user');
+    } else {
       // ignore: use_build_context_synchronously
       showDialog(
         context: context,
@@ -71,58 +126,57 @@ class AuthPage extends StatelessWidget {
     }
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF5271FF),
-      body: SafeArea(
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              MyTextField(
-                hintText: 'Username', 
-                controller: usernameController, 
-                obscureText: false,
+        backgroundColor: const Color(0xFF5271FF),
+        body: SafeArea(
+          child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                MyTextField(
+                  hintText: 'Username',
+                  controller: usernameController,
+                  obscureText: false,
+                ),
+                const SizedBox(
+                  height: 20.0,
+                ),
+                MyTextField(
+                  hintText: 'Password',
+                  controller: passwordController,
+                  obscureText: false,
+                ),
 
-              ),
-              const SizedBox(height: 20.0,),
-              MyTextField(
-                hintText: 'Password', 
-                controller: passwordController, 
-                obscureText: false,
-              ),
-
-              const SizedBox(height: 20.0,),
-              GestureDetector(
-                onTap: () { signInUser(context); },
-                child: Container(
-                  padding: const EdgeInsets.all(25),
-                  margin: const EdgeInsets.symmetric(horizontal: 25),
-                  decoration: BoxDecoration(
-                    color: const Color(0xFFFF3131),
-                    borderRadius: BorderRadius.circular(8)
-                    ),
-                  child: const Center(
-                    child: Text(
-                      "Sign In",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16
-                        ),
+                const SizedBox(
+                  height: 20.0,
+                ),
+                GestureDetector(
+                  onTap: () {
+                    signInUser(context);
+                  },
+                  child: Container(
+                    padding: const EdgeInsets.all(25),
+                    margin: const EdgeInsets.symmetric(horizontal: 25),
+                    decoration: BoxDecoration(
+                        color: const Color(0xFFFF3131),
+                        borderRadius: BorderRadius.circular(8)),
+                    child: const Center(
+                      child: Text(
+                        "Sign In",
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16),
+                      ),
                     ),
                   ),
-                ),
-              )
-              // TextButton(onPressed: onPressed, child: Text('Login'))
-            ],
+                )
+                // TextButton(onPressed: onPressed, child: Text('Login'))
+              ],
+            ),
           ),
-        ),
-      )
-    );
+        ));
   }
 }
-
-
