@@ -23,16 +23,18 @@ class ListBukuUserState extends State<ListBukuUser> {
 
   Future<void> fetchData() async {
     try {
-      // Read current data from book.json
       List<dynamic> jsonData = await fetchBookData();
 
       setState(() {
         allData = jsonData;
         searchResults = List.from(allData);
+        searchResults.sort((a, b) => a['nama_buku']
+            .toString()
+            .toLowerCase()
+            .compareTo(b['nama_buku'].toString().toLowerCase()));
       });
     } catch (e) {
       // Handle errors, such as file not found
-      // ignore: avoid_print
       print('Error fetching data: $e');
     }
   }
@@ -45,11 +47,9 @@ class ListBukuUserState extends State<ListBukuUser> {
         String jsonData = await file.readAsString();
         return json.decode(jsonData);
       } else {
-        // If file doesn't exist yet, return an empty list
         return [];
       }
     } catch (e) {
-      // Handle errors, such as file not found
       return [];
     }
   }

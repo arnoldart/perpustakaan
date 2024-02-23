@@ -46,6 +46,9 @@ class LokasiAdmin extends StatelessWidget {
                             child: Hero(
                               tag: 'imageTag',
                               child: InteractiveViewer(
+                                transformationController:
+                                    TransformationController()
+                                      ..value = Matrix4.identity().scaled(0.3),
                                 maxScale: 5.0,
                                 minScale: 0.05,
                                 constrained: false,

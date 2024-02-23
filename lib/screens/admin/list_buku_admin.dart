@@ -23,16 +23,18 @@ class ListBukuAdminState extends State<ListBukuAdmin> {
 
   Future<void> fetchData() async {
     try {
-      // Read current data from book.json
       List<dynamic> jsonData = await fetchBookData();
 
       setState(() {
         allData = jsonData;
         searchResults = List.from(allData);
+        searchResults.sort((a, b) => a['nama_buku']
+            .toString()
+            .toLowerCase()
+            .compareTo(b['nama_buku'].toString().toLowerCase()));
       });
     } catch (e) {
       // Handle errors, such as file not found
-      // ignore: avoid_print
       print('Error fetching data: $e');
     }
   }

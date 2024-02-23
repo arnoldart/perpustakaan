@@ -176,12 +176,23 @@ class _UploadPageAdminState extends State<UploadPageAdmin> {
       String bookJsonPath = '${externalDir!.path}/book.json';
 
       List<dynamic> jsonData = [];
+      int lastId = 0; // ID terakhir, default 0 jika belum ada buku
       if (File(bookJsonPath).existsSync()) {
         String jsonDataString = await File(bookJsonPath).readAsString();
         jsonData = json.decode(jsonDataString);
+
+        // Cari ID terbesar
+        for (var book in jsonData) {
+          int id = book['id'];
+          if (id > lastId) {
+            lastId = id;
+          }
+        }
       }
 
+      // Tambahkan buku dengan ID yang lebih besar dari ID terakhir
       jsonData.add({
+        'id': lastId + 1, // ID baru
         'image_link': imagePath,
         'pdf_link': pdfPath,
         'nama_buku': titleController.text,
@@ -193,7 +204,7 @@ class _UploadPageAdminState extends State<UploadPageAdmin> {
 
       await File(bookJsonPath).writeAsString(json.encode(jsonData));
     } catch (e) {
-      // ignore: avoid_print
+      // Tangani kesalahan saat menambahkan ke book.json
       print('Error adding to book.json: $e');
     }
   }

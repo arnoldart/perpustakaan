@@ -40,7 +40,6 @@ class _DashboardAdminState extends State<DashboardAdmin> {
       setState(() {
         allData = jsonData;
         searchResults = List.from(allData);
-        groupDataByGenre();
       });
     } catch (e) {
       // Handle errors, seperti file tidak ditemukan
@@ -55,27 +54,20 @@ class _DashboardAdminState extends State<DashboardAdmin> {
           File('${(await getExternalStorageDirectory())!.path}/book.json');
       if (file.existsSync()) {
         String jsonData = await file.readAsString();
-        return json.decode(jsonData);
-      } else {
-        // Jika file belum ada, kembalikan list kosong
-        return [];
+        List<dynamic> books = json.decode(jsonData);
+
+        // Mengurutkan buku berdasarkan ID secara menurun
+        books.sort((a, b) => b['id'].compareTo(a['id']));
+
+        return books;
       }
     } catch (e) {
-      // Handle errors, seperti file tidak ditemukan
-      return [];
+      // Tangani kesalahan saat membaca file atau parsing JSON
+      print('Error reading or parsing file: $e');
     }
-  }
 
-  void groupDataByGenre() {
-    groupedData.clear();
-    for (var book in searchResults) {
-      String genre = book['genre'] ??
-          'Lainnya'; // Sesuaikan dengan struktur data sesuai kebutuhan
-      if (!groupedData.containsKey(genre)) {
-        groupedData[genre] = [];
-      }
-      groupedData[genre]!.add(book);
-    }
+    // Jika file tidak ditemukan atau terjadi kesalahan lainnya, kembalikan list kosong
+    return [];
   }
 
   void searchBooks(String query) {
@@ -84,7 +76,6 @@ class _DashboardAdminState extends State<DashboardAdmin> {
           .where((book) =>
               book['nama_buku'].toLowerCase().contains(query.toLowerCase()))
           .toList();
-      groupDataByGenre(); // Update groupedData based on searchResults
     });
   }
 
@@ -106,7 +97,6 @@ class _DashboardAdminState extends State<DashboardAdmin> {
     setState(() {
       allData.remove(book);
       searchResults.remove(book); // Remove from searchResults as well
-      groupDataByGenre();
     });
 
     saveData();
@@ -335,17 +325,14 @@ class _DashboardAdminState extends State<DashboardAdmin> {
                                   fit: BoxFit.fill,
                                   width: 100,
                                 ),
-                                const SizedBox(
-                                    width:
-                                        16), // Beri jarak antara gambar dan teks
+                                const SizedBox(width: 16),
                                 Expanded(
                                   child: Column(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
                                       Text(
-                                        book[
-                                            'nama_buku'], // Ganti dengan properti judul dari data buku
+                                        book['nama_buku'],
                                         style: const TextStyle(
                                           fontWeight: FontWeight.bold,
                                           fontSize: 16,
