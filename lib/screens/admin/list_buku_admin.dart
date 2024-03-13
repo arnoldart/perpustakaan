@@ -35,6 +35,7 @@ class ListBukuAdminState extends State<ListBukuAdmin> {
       });
     } catch (e) {
       // Handle errors, such as file not found
+      // ignore: avoid_print
       print('Error fetching data: $e');
     }
   }
@@ -69,7 +70,7 @@ class ListBukuAdminState extends State<ListBukuAdmin> {
         appBar: AppBar(
           title: const Text(
             'List Buku',
-            style: TextStyle(color: Colors.white),
+            style: TextStyle(color: Colors.white, fontFamily: 'ErasBoldItc'),
           ),
           leading: IconButton(
             onPressed: () {
@@ -102,19 +103,25 @@ class ListBukuAdminState extends State<ListBukuAdmin> {
                                 Expanded(
                                   child: Text(
                                     'Nama Buku',
-                                    style: TextStyle(color: Colors.white),
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontFamily: 'ErasBoldItc'),
                                   ),
                                 ),
                                 Expanded(
                                   child: Text(
                                     'Author',
-                                    style: TextStyle(color: Colors.white),
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontFamily: 'ErasBoldItc'),
                                   ),
                                 ),
                                 Expanded(
                                   child: Text(
                                     'Kategori Buku',
-                                    style: TextStyle(color: Colors.white),
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontFamily: 'ErasBoldItc'),
                                   ),
                                 ),
                               ],
@@ -134,13 +141,19 @@ class ListBukuAdminState extends State<ListBukuAdmin> {
                                 child: Row(
                                   children: [
                                     Expanded(
-                                      child: Text(book['nama_buku']),
+                                      child: Text(book['nama_buku'],
+                                          style: const TextStyle(
+                                              fontFamily: 'ErasBoldItc')),
                                     ),
                                     Expanded(
-                                      child: Text(book['Author']),
+                                      child: Text(book['Author'],
+                                          style: const TextStyle(
+                                              fontFamily: 'ErasBoldItc')),
                                     ),
                                     Expanded(
-                                      child: Text(book['genre']),
+                                      child: Text(book['genre'],
+                                          style: const TextStyle(
+                                              fontFamily: 'ErasBoldItc')),
                                     ),
                                   ],
                                 ),

@@ -129,54 +129,79 @@ class AuthPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: const Color(0xFF5271FF),
-        body: SafeArea(
-          child: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                MyTextField(
-                  hintText: 'Username',
-                  controller: usernameController,
-                  obscureText: false,
-                ),
-                const SizedBox(
-                  height: 20.0,
-                ),
-                MyTextField(
-                  hintText: 'Password',
-                  controller: passwordController,
-                  obscureText: false,
-                ),
-
-                const SizedBox(
-                  height: 20.0,
-                ),
-                GestureDetector(
-                  onTap: () {
-                    signInUser(context);
-                  },
-                  child: Container(
-                    padding: const EdgeInsets.all(25),
-                    margin: const EdgeInsets.symmetric(horizontal: 25),
-                    decoration: BoxDecoration(
-                        color: const Color(0xFFFF3131),
-                        borderRadius: BorderRadius.circular(8)),
-                    child: const Center(
-                      child: Text(
-                        "Sign In",
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 16),
-                      ),
-                    ),
-                  ),
-                )
-                // TextButton(onPressed: onPressed, child: Text('Login'))
-              ],
+        body: Container(
+      decoration: const BoxDecoration(
+        image: DecorationImage(
+          image: AssetImage('img/LoginBG.png'),
+          fit: BoxFit.cover,
+        ),
+      ),
+      child: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Image.asset(
+              'img/LogoUNP.png', // Sesuaikan dengan path gambar Anda
+              height: 200, // Sesuaikan dengan tinggi gambar yang diinginkan
+              width: 200, // Sesuaikan dengan lebar gambar yang diinginkan
             ),
-          ),
-        ));
+            const SizedBox(
+              height: 20.0,
+            ),
+            const Text(
+              'SMPN 17 Kerinci',
+              style: TextStyle(
+                  fontSize: 30,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                  fontFamily: 'ErasBoldItc'),
+            ),
+            const SizedBox(
+              height: 20.0,
+            ),
+            MyTextField(
+              hintText: 'Username',
+              controller: usernameController,
+              obscureText: false,
+            ),
+            const SizedBox(
+              height: 20.0,
+            ),
+            MyTextField(
+              hintText: 'Password',
+              controller: passwordController,
+              obscureText: false,
+            ),
+
+            const SizedBox(
+              height: 20.0,
+            ),
+            GestureDetector(
+              onTap: () {
+                signInUser(context);
+              },
+              child: Container(
+                padding: const EdgeInsets.all(25),
+                margin: const EdgeInsets.symmetric(horizontal: 25),
+                decoration: BoxDecoration(
+                    color: const Color(0xFFFF3131),
+                    borderRadius: BorderRadius.circular(8)),
+                child: const Center(
+                  child: Text(
+                    "Sign In",
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
+                        fontFamily: 'ErasBoldItc'),
+                  ),
+                ),
+              ),
+            )
+            // TextButton(onPressed: onPressed, child: Text('Login'))
+          ],
+        ),
+      ),
+    ));
   }
 }

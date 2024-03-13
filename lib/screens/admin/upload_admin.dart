@@ -205,6 +205,7 @@ class _UploadPageAdminState extends State<UploadPageAdmin> {
       await File(bookJsonPath).writeAsString(json.encode(jsonData));
     } catch (e) {
       // Tangani kesalahan saat menambahkan ke book.json
+      // ignore: avoid_print
       print('Error adding to book.json: $e');
     }
   }
@@ -220,8 +221,8 @@ class _UploadPageAdminState extends State<UploadPageAdmin> {
       child: Scaffold(
         backgroundColor: Colors.grey[300],
         appBar: AppBar(
-          title:
-              const Text('Tambah Buku', style: TextStyle(color: Colors.white)),
+          title: const Text('Tambah Buku',
+              style: TextStyle(color: Colors.white, fontFamily: 'ErasBoldItc')),
           leading: IconButton(
             onPressed: () {
               Navigator.pushReplacementNamed(context, '/dashboard_admin');
@@ -266,6 +267,7 @@ class _UploadPageAdminState extends State<UploadPageAdmin> {
                         isYearEmpty = value.isEmpty;
                       });
                     },
+                    style: const TextStyle(fontFamily: 'ErasBoldItc'),
                     decoration: InputDecoration(
                         enabledBorder: OutlineInputBorder(
                           borderSide: BorderSide(
@@ -281,8 +283,10 @@ class _UploadPageAdminState extends State<UploadPageAdmin> {
                         errorText: isYearEmpty
                             ? "Harap masukkan tahun rilis buku"
                             : null,
-                        errorStyle:
-                            const TextStyle(fontSize: 12, color: Colors.red),
+                        errorStyle: const TextStyle(
+                            fontSize: 12,
+                            color: Colors.red,
+                            fontFamily: 'ErasBoldItc'),
                         errorBorder: const OutlineInputBorder(
                           borderSide: BorderSide(
                               color: Colors.red), // Ubah warna menjadi merah
@@ -310,36 +314,78 @@ class _UploadPageAdminState extends State<UploadPageAdmin> {
                     items: genres.map<DropdownMenuItem<String>>((String genre) {
                       return DropdownMenuItem<String>(
                         value: genre,
-                        child: Text(genre),
+                        child: Text(
+                          genre,
+                          style: const TextStyle(fontFamily: 'ErasBoldItc'),
+                        ),
                       );
                     }).toList(),
-                    hint: const Text('Select Genre'),
+                    hint: const Text(
+                      'Select Genre',
+                      style: TextStyle(fontFamily: 'ErasBoldItc'),
+                    ),
                   ),
                   const SizedBox(height: 20),
-                  ElevatedButton(
-                    onPressed: _pickImage,
-                    child: const Text('Pick Image'),
+                  GestureDetector(
+                    onTap: _pickImage,
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(vertical: 15),
+                      decoration: BoxDecoration(
+                        color: const Color(0xFF5271FF),
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: const Center(
+                        child: Text(
+                          'Pick Image',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16,
+                            fontFamily: 'ErasBoldItc',
+                          ),
+                        ),
+                      ),
+                    ),
                   ),
                   if (isImageNotSelected)
                     const Padding(
                       padding: EdgeInsets.only(top: 5.0),
                       child: Text(
                         'Harap pilih gambar buku',
-                        style: TextStyle(color: Colors.red),
+                        style: TextStyle(
+                            color: Colors.red, fontFamily: 'ErasBoldItc'),
                       ),
                     ),
                   if (imagePath != null) Text('Image Path: $imagePath'),
                   const SizedBox(height: 20),
-                  ElevatedButton(
-                    onPressed: _pickPdf,
-                    child: const Text('Pick PDF'),
+                  GestureDetector(
+                    onTap: _pickPdf,
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(vertical: 15),
+                      decoration: BoxDecoration(
+                        color: const Color(0xFF5271FF),
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: const Center(
+                        child: Text(
+                          'Pick PDF',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16,
+                            fontFamily: 'ErasBoldItc',
+                          ),
+                        ),
+                      ),
+                    ),
                   ),
                   if (isPdfNotSelected)
                     const Padding(
                       padding: EdgeInsets.only(top: 5.0),
                       child: Text(
                         'Harap pilih file PDF buku',
-                        style: TextStyle(color: Colors.red),
+                        style: TextStyle(
+                            color: Colors.red, fontFamily: 'ErasBoldItc'),
                       ),
                     ),
                   if (pdfPath != null) Text('PDF Path: $pdfPath'),
@@ -359,7 +405,8 @@ class _UploadPageAdminState extends State<UploadPageAdmin> {
                           style: TextStyle(
                               color: Colors.white,
                               fontWeight: FontWeight.bold,
-                              fontSize: 16),
+                              fontSize: 16,
+                              fontFamily: 'ErasBoldItc'),
                         ),
                       ),
                     ),

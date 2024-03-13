@@ -17,6 +17,7 @@ class UploadTextField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextField(
+      style: const TextStyle(fontFamily: 'ErasBoldItc'),
       controller: controller,
       obscureText: obscureText,
       decoration: InputDecoration(
@@ -30,7 +31,8 @@ class UploadTextField extends StatelessWidget {
           filled: true,
           hintText: hintText,
           errorText: errorText,
-          errorStyle: const TextStyle(fontSize: 12, color: Colors.red),
+          errorStyle: const TextStyle(
+              fontSize: 12, color: Colors.red, fontFamily: 'ErasBoldItc'),
           errorBorder: const OutlineInputBorder(
             borderSide: BorderSide(color: Colors.red),
           ),

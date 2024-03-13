@@ -9,16 +9,16 @@ class UnboardingContent {
 
 List<UnboardingContent> contents = [
   UnboardingContent(
-      title: "Selamat Datang di \n Digital Library \n SMPN 17 Kerinci",
+      title: "Selamat Datang \n pada \n Digital Library \n SMPN 17 Kerinci",
       description:
-          "Aplikasi yang bikin kamu makin semangat belajar, dengan banyaknya koleksi buku yang bisa kamu baca, kamu bisa belajar dimana saja dan kapan saja",
+          "Sebuah aplikasi yang memberikan dorongan semangat dalam proses pembelajaran, dengan menyediakan beragam koleksi buku yang dapat diakses, memungkinkan pengguna untuk belajar secara fleksibel, di mana pun dan kapan pun mereka berada.",
       image: "img/welcome.png"),
   UnboardingContent(
-      title: "Petunjuk",
+      title: "Perhatian",
       description: "Jika Belum terdaftar silahkan hubungi petugas perpustakaan",
       image: "img/guide1.png"),
   UnboardingContent(
-      title: "Petunjuk",
+      title: "Perhatian",
       description: "Jika sudah terdaftar silahkan tekan tombol done",
       image: "img/guide2.png"),
 ];

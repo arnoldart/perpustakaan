@@ -44,10 +44,10 @@ class _OnBoardingState extends State<OnBoarding> {
                       Text(
                         contents[i].title,
                         style: const TextStyle(
-                          fontSize: 30,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
-                        ),
+                            fontSize: 30,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                            fontFamily: 'ErasBoldItc'),
                         textAlign: TextAlign.center,
                       ),
                       const SizedBox(height: 30),
@@ -57,6 +57,7 @@ class _OnBoardingState extends State<OnBoarding> {
                         style: const TextStyle(
                           fontSize: 18,
                           color: Colors.white,
+                          fontFamily: 'ErasBoldItc',
                         ),
                       ),
                       const Spacer(),
@@ -83,7 +84,8 @@ class _OnBoardingState extends State<OnBoarding> {
                       }));
                     },
                     child: const Text('Skip',
-                        style: TextStyle(color: Colors.white)),
+                        style: TextStyle(
+                            color: Colors.white, fontFamily: 'ErasBoldItc')),
                   ),
                   SmoothPageIndicator(
                     effect: const ExpandingDotsEffect(
@@ -112,7 +114,9 @@ class _OnBoardingState extends State<OnBoarding> {
                             );
                           },
                           child: const Text('Next',
-                              style: TextStyle(color: Colors.white)),
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontFamily: 'ErasBoldItc')),
                         ),
                 ],
               ),

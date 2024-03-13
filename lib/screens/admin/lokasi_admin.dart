@@ -14,7 +14,8 @@ class LokasiAdmin extends StatelessWidget {
       },
       child: Scaffold(
         appBar: AppBar(
-          title: const Text('Lokasi', style: TextStyle(color: Colors.white)),
+          title: const Text('Lokasi',
+              style: TextStyle(color: Colors.white, fontFamily: 'ErasBoldItc')),
           leading: IconButton(
             onPressed: () {
               Navigator.pushReplacementNamed(context, '/dashboard_admin');
@@ -83,6 +84,7 @@ class LokasiAdmin extends StatelessWidget {
                 style: TextStyle(
                   fontSize: 16,
                   color: Colors.blue,
+                  fontFamily: 'ErasBoldItc',
                   decoration: TextDecoration.underline,
                 ),
               ),

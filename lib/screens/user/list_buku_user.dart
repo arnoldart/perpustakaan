@@ -35,6 +35,7 @@ class ListBukuUserState extends State<ListBukuUser> {
       });
     } catch (e) {
       // Handle errors, such as file not found
+      // ignore: avoid_print
       print('Error fetching data: $e');
     }
   }
@@ -67,7 +68,7 @@ class ListBukuUserState extends State<ListBukuUser> {
         appBar: AppBar(
           title: const Text(
             'List Buku',
-            style: TextStyle(color: Colors.white),
+            style: TextStyle(color: Colors.white, fontFamily: 'ErasBoldItc'),
           ),
           leading: IconButton(
             onPressed: () {
@@ -100,19 +101,25 @@ class ListBukuUserState extends State<ListBukuUser> {
                                 Expanded(
                                   child: Text(
                                     'Nama Buku',
-                                    style: TextStyle(color: Colors.white),
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontFamily: 'ErasBoldItc'),
                                   ),
                                 ),
                                 Expanded(
                                   child: Text(
                                     'Author',
-                                    style: TextStyle(color: Colors.white),
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontFamily: 'ErasBoldItc'),
                                   ),
                                 ),
                                 Expanded(
                                   child: Text(
                                     'Kategori Buku',
-                                    style: TextStyle(color: Colors.white),
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontFamily: 'ErasBoldItc'),
                                   ),
                                 ),
                               ],
@@ -132,13 +139,25 @@ class ListBukuUserState extends State<ListBukuUser> {
                                 child: Row(
                                   children: [
                                     Expanded(
-                                      child: Text(book['nama_buku']),
+                                      child: Text(
+                                        book['nama_buku'],
+                                        style: const TextStyle(
+                                            fontFamily: 'ErasBoldItc'),
+                                      ),
                                     ),
                                     Expanded(
-                                      child: Text(book['Author']),
+                                      child: Text(
+                                        book['Author'],
+                                        style: const TextStyle(
+                                            fontFamily: 'ErasBoldItc'),
+                                      ),
                                     ),
                                     Expanded(
-                                      child: Text(book['genre']),
+                                      child: Text(
+                                        book['genre'],
+                                        style: const TextStyle(
+                                            fontFamily: 'ErasBoldItc'),
+                                      ),
                                     ),
                                   ],
                                 ),

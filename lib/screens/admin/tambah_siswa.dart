@@ -125,8 +125,8 @@ class _TambahSiswaState extends State<TambahSiswa> {
       child: Scaffold(
         backgroundColor: Colors.grey[300],
         appBar: AppBar(
-          title:
-              const Text('Tambah Siswa', style: TextStyle(color: Colors.white)),
+          title: const Text('Tambah Siswa',
+              style: TextStyle(color: Colors.white, fontFamily: 'ErasBoldItc')),
           leading: IconButton(
             onPressed: () {
               Navigator.pushReplacementNamed(context, '/dashboard_admin');
@@ -178,6 +178,7 @@ class _TambahSiswaState extends State<TambahSiswa> {
                           style: TextStyle(
                               color: Colors.white,
                               fontWeight: FontWeight.bold,
+                              fontFamily: 'ErasBoldItc',
                               fontSize: 16),
                         ),
                       ),

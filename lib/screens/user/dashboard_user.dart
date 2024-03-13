@@ -26,6 +26,7 @@ class _DashboardUserState extends State<DashboardUser> {
   void initState() {
     super.initState();
     fetchData();
+    groupDataByGenre();
   }
 
   void _logout(BuildContext context) {
@@ -40,6 +41,7 @@ class _DashboardUserState extends State<DashboardUser> {
       setState(() {
         allData = jsonData;
         searchResults = List.from(allData);
+        groupDataByGenre();
       });
     } catch (e) {
       // Handle errors, seperti file tidak ditemukan
@@ -63,6 +65,7 @@ class _DashboardUserState extends State<DashboardUser> {
       }
     } catch (e) {
       // Tangani kesalahan saat membaca file atau parsing JSON
+      // ignore: avoid_print
       print('Error reading or parsing file: $e');
     }
 
@@ -76,6 +79,7 @@ class _DashboardUserState extends State<DashboardUser> {
           .where((book) =>
               book['nama_buku'].toLowerCase().contains(query.toLowerCase()))
           .toList();
+      groupDataByGenre();
     });
   }
 
@@ -90,10 +94,22 @@ class _DashboardUserState extends State<DashboardUser> {
     );
   }
 
+  void groupDataByGenre() {
+    groupedData.clear();
+    for (var book in searchResults) {
+      String genre = book['genre'] ?? 'Lainnya';
+      if (!groupedData.containsKey(genre)) {
+        groupedData[genre] = [];
+      }
+      groupedData[genre]!.add(book);
+    }
+  }
+
   void onDeleteBook(dynamic book) {
     setState(() {
       allData.remove(book);
-      searchResults.remove(book); // Remove from searchResults as well
+      searchResults.remove(book);
+      groupDataByGenre();
     });
 
     saveData();
@@ -150,29 +166,42 @@ class _DashboardUserState extends State<DashboardUser> {
             child: Text(
               'Perpustakaan',
               style: TextStyle(
-                color: Colors.white,
-                fontSize: 24,
-              ),
+                  color: Colors.white, fontSize: 24, fontFamily: 'ErasBoldItc'),
             ),
           ),
           ListTile(
-            title: const Text('List Buku'),
+            title: const Text(
+              'List Buku',
+              style: TextStyle(fontFamily: 'ErasBoldItc'),
+            ),
             onTap: () {
               Navigator.pushReplacementNamed(context, '/list_buku_user');
             },
           ),
           ListTile(
-            title: const Text('Lokasi'),
+            title: const Text(
+              'Lokasi',
+              style: TextStyle(fontFamily: 'ErasBoldItc'),
+            ),
             onTap: () {
               Navigator.pushReplacementNamed(context, '/lokasi_user');
+            },
+          ),
+          ListTile(
+            title: const Text(
+              'Petunjuk',
+              style: TextStyle(fontFamily: 'ErasBoldItc'),
+            ),
+            onTap: () {
+              Navigator.pushReplacementNamed(context, '/petunjuk_user');
             },
           ),
           const Divider(),
           Column(
             children: [
               CustomExpansionTile(
-                title:
-                    const Text('Kategori Buku', style: TextStyle(fontSize: 16)),
+                title: const Text('Kategori Buku',
+                    style: TextStyle(fontSize: 16, fontFamily: 'ErasBoldItc')),
                 children: [
                   for (var genre in groupedData.keys)
                     GestureDetector(
@@ -198,6 +227,7 @@ class _DashboardUserState extends State<DashboardUser> {
                         title: Text(
                           genre,
                           style: TextStyle(
+                            fontFamily: 'ErasBoldItc',
                             fontSize: 14,
                             fontWeight: selectedCategories.contains(genre)
                                 ? FontWeight.bold
@@ -219,7 +249,7 @@ class _DashboardUserState extends State<DashboardUser> {
         backgroundColor: const Color(0xFF5271FF),
         title: const Text(
           'Dashboard',
-          style: TextStyle(color: Colors.white),
+          style: TextStyle(color: Colors.white, fontFamily: 'ErasBoldItc'),
         ),
         actions: [
           IconButton(
@@ -233,21 +263,33 @@ class _DashboardUserState extends State<DashboardUser> {
                 context: context,
                 builder: (BuildContext context) {
                   return AlertDialog(
-                    title: const Text('Konfirmasi Logout'),
-                    content: const Text('Apakah Anda yakin ingin logout?'),
+                    title: const Text(
+                      'Konfirmasi Logout',
+                      style: TextStyle(fontFamily: 'ErasBoldItc'),
+                    ),
+                    content: const Text(
+                      'Apakah Anda yakin ingin logout?',
+                      style: TextStyle(fontFamily: 'ErasBoldItc'),
+                    ),
                     actions: [
                       TextButton(
                         onPressed: () {
                           _logout(context);
                         },
-                        child: const Text('Iya'),
+                        child: const Text(
+                          'Iya',
+                          style: TextStyle(fontFamily: 'ErasBoldItc'),
+                        ),
                       ),
                       TextButton(
                         onPressed: () {
                           // Jika tidak, tutup dialog
                           Navigator.of(context).pop();
                         },
-                        child: const Text('Tidak'),
+                        child: const Text(
+                          'Tidak',
+                          style: TextStyle(fontFamily: 'ErasBoldItc'),
+                        ),
                       ),
                     ],
                   );
@@ -270,8 +312,9 @@ class _DashboardUserState extends State<DashboardUser> {
       body: Column(
         children: [
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 17, vertical: 10),
+            padding: const EdgeInsets.symmetric(horizontal: 17, vertical: 20),
             child: TextField(
+              style: const TextStyle(fontFamily: 'ErasBoldItc'),
               controller: searchController,
               decoration: const InputDecoration(
                 enabledBorder: OutlineInputBorder(
@@ -321,20 +364,35 @@ class _DashboardUserState extends State<DashboardUser> {
                                       Text(
                                         book['nama_buku'],
                                         style: const TextStyle(
+                                          fontFamily: 'ErasBoldItc',
                                           fontWeight: FontWeight.bold,
                                           fontSize: 16,
                                         ),
                                         overflow: TextOverflow.ellipsis,
                                         maxLines: 1,
                                       ),
-                                      Text('Author: ${book['Author']}'),
-                                      Text('Tahun: ${book['Tahun']}'),
+                                      Text(
+                                        'Author: ${book['Author']}',
+                                        style: const TextStyle(
+                                            fontFamily: 'ErasBoldItc'),
+                                      ),
+                                      Text(
+                                        'Tahun: ${book['Tahun']}',
+                                        style: const TextStyle(
+                                            fontFamily: 'ErasBoldItc'),
+                                      ),
                                       Text(
                                         'Penerbit: ${book['Penerbit']}',
                                         overflow: TextOverflow.ellipsis,
                                         maxLines: 1,
+                                        style: const TextStyle(
+                                            fontFamily: 'ErasBoldItc'),
                                       ),
-                                      Text('Kategori: ${book['genre']}'),
+                                      Text(
+                                        'Kategori: ${book['genre']}',
+                                        style: const TextStyle(
+                                            fontFamily: 'ErasBoldItc'),
+                                      ),
                                     ],
                                   ),
                                 ),
@@ -362,7 +420,10 @@ class BookDetailPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text(book['nama_buku']),
+          title: Text(
+            book['nama_buku'],
+            style: const TextStyle(fontFamily: 'ErasBoldItc'),
+          ),
         ),
         body: SfPdfViewer.file(File(book['pdf_link'])));
   }

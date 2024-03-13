@@ -1,8 +1,0 @@
-{
-"type": "FeatureCollection",
-"name": "Main Layer",
-"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
-"features": [
-{ "type": "Feature", "properties": { "Name": "SMPN 17 KERINCI" }, "geometry": { "type": "Point", "coordinates": [ 101.3007142, -1.8940237 ] } }
-]
-}
