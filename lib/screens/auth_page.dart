@@ -141,9 +141,9 @@ class AuthPage extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Image.asset(
-              'img/LogoUNP.png', // Sesuaikan dengan path gambar Anda
-              height: 200, // Sesuaikan dengan tinggi gambar yang diinginkan
-              width: 200, // Sesuaikan dengan lebar gambar yang diinginkan
+              'img/LogoUNP.png',
+              height: 200,
+              width: 200,
             ),
             const SizedBox(
               height: 20.0,

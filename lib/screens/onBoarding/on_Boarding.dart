@@ -4,7 +4,7 @@ import 'package:perpustakaan/screens/auth_page.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class OnBoarding extends StatefulWidget {
-  const OnBoarding({super.key});
+  const OnBoarding({Key? key}) : super(key: key);
 
   @override
   State<OnBoarding> createState() => _OnBoardingState();
@@ -22,18 +22,26 @@ class _OnBoardingState extends State<OnBoarding> {
         children: [
           PageView.builder(
             controller: _controller,
-            itemCount: contents.length,
+            itemCount: contents.titlesDescriptionsAndImages.length,
             onPageChanged: (index) {
               setState(() {
-                onLastPage = (index == contents.length - 1);
+                onLastPage =
+                    (index == contents.titlesDescriptionsAndImages.length - 1);
               });
             },
             itemBuilder: (_, i) {
+              String title = contents.titlesDescriptionsAndImages[i]["title"]!;
+              String description =
+                  contents.titlesDescriptionsAndImages[i]["description"]!;
+              String image = contents.titlesDescriptionsAndImages[i]["image"]!;
+              String background =
+                  contents.titlesDescriptionsAndImages[i]["background"]!;
+
               return Container(
                 decoration: BoxDecoration(
                   image: DecorationImage(
                     fit: BoxFit.cover,
-                    image: AssetImage(contents[i].image),
+                    image: AssetImage(background),
                   ),
                 ),
                 child: Padding(
@@ -41,18 +49,25 @@ class _OnBoardingState extends State<OnBoarding> {
                   child: Column(
                     children: [
                       const Spacer(),
-                      Text(
-                        contents[i].title,
-                        style: const TextStyle(
+                      if (image.isNotEmpty)
+                        Image.asset(
+                          image,
+                          height: 170,
+                        ),
+                      if (title.isNotEmpty)
+                        Text(
+                          title,
+                          style: const TextStyle(
                             fontSize: 30,
                             fontWeight: FontWeight.bold,
                             color: Colors.white,
-                            fontFamily: 'ErasBoldItc'),
-                        textAlign: TextAlign.center,
-                      ),
+                            fontFamily: 'ErasBoldItc',
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
                       const SizedBox(height: 30),
                       Text(
-                        contents[i].description,
+                        description,
                         textAlign: TextAlign.center,
                         style: const TextStyle(
                           fontSize: 18,
@@ -83,9 +98,11 @@ class _OnBoardingState extends State<OnBoarding> {
                         return AuthPage();
                       }));
                     },
-                    child: const Text('Skip',
-                        style: TextStyle(
-                            color: Colors.white, fontFamily: 'ErasBoldItc')),
+                    child: const Text(
+                      'Skip',
+                      style: TextStyle(
+                          color: Colors.white, fontFamily: 'ErasBoldItc'),
+                    ),
                   ),
                   SmoothPageIndicator(
                     effect: const ExpandingDotsEffect(
@@ -93,7 +110,7 @@ class _OnBoardingState extends State<OnBoarding> {
                       dotColor: Colors.white,
                     ),
                     controller: _controller,
-                    count: contents.length,
+                    count: contents.titlesDescriptionsAndImages.length,
                   ),
                   onLastPage
                       ? GestureDetector(
@@ -103,8 +120,11 @@ class _OnBoardingState extends State<OnBoarding> {
                               return AuthPage();
                             }));
                           },
-                          child: const Text('Done',
-                              style: TextStyle(color: Colors.white)),
+                          child: const Text(
+                            'Done',
+                            style: TextStyle(
+                                color: Colors.white, fontFamily: 'ErasBoldItc'),
+                          ),
                         )
                       : GestureDetector(
                           onTap: () {
@@ -113,10 +133,11 @@ class _OnBoardingState extends State<OnBoarding> {
                               curve: Curves.easeIn,
                             );
                           },
-                          child: const Text('Next',
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontFamily: 'ErasBoldItc')),
+                          child: const Text(
+                            'Next',
+                            style: TextStyle(
+                                color: Colors.white, fontFamily: 'ErasBoldItc'),
+                          ),
                         ),
                 ],
               ),
