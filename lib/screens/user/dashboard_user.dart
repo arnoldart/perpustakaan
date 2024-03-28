@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:perpustakaan/components/custom_expansiontile.dart';
 import 'package:perpustakaan/models/auth_model.dart';
@@ -35,11 +36,15 @@ class _DashboardUserState extends State<DashboardUser> {
 
   Future<void> fetchData() async {
     try {
-      // Baca data saat ini dari book.json
       List<dynamic> jsonData = await fetchBookData();
+      String jsonDataFromAssets =
+          await rootBundle.loadString('lib/assets/book.json');
+      List<dynamic> booksFromAssets = json.decode(jsonDataFromAssets);
+
+      List<dynamic> mergedData = [...jsonData, ...booksFromAssets];
 
       setState(() {
-        allData = jsonData;
+        allData = mergedData;
         searchResults = List.from(allData);
         groupDataByGenre();
       });
@@ -350,11 +355,7 @@ class _DashboardUserState extends State<DashboardUser> {
                             height: 150,
                             child: Row(
                               children: [
-                                Image.file(
-                                  File(book['image_link']),
-                                  fit: BoxFit.cover,
-                                  width: 100,
-                                ),
+                                _buildBookImage(book['image_link']),
                                 const SizedBox(width: 16),
                                 Expanded(
                                   child: Column(
@@ -411,6 +412,22 @@ class _DashboardUserState extends State<DashboardUser> {
   }
 }
 
+Widget _buildBookImage(String imagePath) {
+  if (imagePath.startsWith('img/pdf')) {
+    return Image.asset(
+      imagePath,
+      fit: BoxFit.fill,
+      width: 100,
+    );
+  } else {
+    return Image.file(
+      File(imagePath),
+      fit: BoxFit.fill,
+      width: 100,
+    );
+  }
+}
+
 class BookDetailPage extends StatelessWidget {
   final dynamic book;
 
@@ -425,6 +442,16 @@ class BookDetailPage extends StatelessWidget {
             style: const TextStyle(fontFamily: 'ErasBoldItc'),
           ),
         ),
-        body: SfPdfViewer.file(File(book['pdf_link'])));
+        body: _buildPdf(book['pdf_link']));
+  }
+}
+
+Widget _buildPdf(String pdfPath) {
+  if (pdfPath.startsWith('pdf/')) {
+    // Gunakan AssetImage jika path dimulai dengan 'lib/assets/'
+    return SfPdfViewer.asset(pdfPath);
+  } else {
+    // Gunakan FileImage jika path tidak dimulai dengan 'lib/assets/'
+    return SfPdfViewer.file(File(pdfPath));
   }
 }

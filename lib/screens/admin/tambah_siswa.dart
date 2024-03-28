@@ -22,7 +22,6 @@ class _TambahSiswaState extends State<TambahSiswa> {
   @override
   void initState() {
     super.initState();
-    // _checkAndRequestPermission();
   }
 
   Future<String> copyFileToExternalStorage(
@@ -48,21 +47,6 @@ class _TambahSiswaState extends State<TambahSiswa> {
     }
   }
 
-  Future<void> _uploadFile() async {
-    if (_validateForm()) {
-      // Implementasi upload file ke server atau aksi lainnya
-      await addToBookJson();
-      setState(() {
-        username.text = '';
-        password.text = '';
-      });
-
-      // ignore: use_build_context_synchronously
-      Navigator.pushNamedAndRemoveUntil(
-          context, '/dashboard_admin', (route) => false);
-    }
-  }
-
   bool _validateForm() {
     setState(() {
       isUsernameEmpty = username.text.isEmpty;
@@ -75,20 +59,43 @@ class _TambahSiswaState extends State<TambahSiswa> {
     return true;
   }
 
-  Future<void> addToBookJson() async {
+  Future<void> addToDataJson() async {
     try {
       Directory? externalDir = await getExternalStorageDirectory();
       String bookJsonPath = '${externalDir!.path}/user.json';
 
       List<dynamic> jsonData = [];
-      int newId = 1; // ID awal
+      int newId = 1;
 
       if (File(bookJsonPath).existsSync()) {
-        // Baca data saat ini dari user.json
         String jsonDataString = await File(bookJsonPath).readAsString();
         jsonData = json.decode(jsonDataString);
 
-        // Ambil ID terbesar yang ada
+        bool isUsernameExists =
+            jsonData.any((entry) => entry['username'] == username.text);
+
+        if (isUsernameExists) {
+          // ignore: use_build_context_synchronously
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: const Text('Error'),
+                content: const Text('Nama pengguna sudah digunakan.'),
+                actions: <Widget>[
+                  TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: const Text('OK'),
+                  ),
+                ],
+              );
+            },
+          );
+          return;
+        }
+
         if (jsonData.isNotEmpty) {
           List<int> ids =
               jsonData.map((entry) => entry['id']).cast<int>().toList();
@@ -97,8 +104,6 @@ class _TambahSiswaState extends State<TambahSiswa> {
               1;
         }
       }
-
-      // Tambahkan data pengguna baru dengan ID yang baru dihasilkan
       jsonData.add({
         'id': newId,
         'username': username.text,
@@ -106,8 +111,20 @@ class _TambahSiswaState extends State<TambahSiswa> {
         'role': 'user',
       });
 
-      // Simpan kembali ke dalam user.json
       await File(bookJsonPath).writeAsString(json.encode(jsonData));
+
+      if (_validateForm()) {
+        // Implementasi upload file ke server atau aksi lainnya
+        await addToDataJson();
+        setState(() {
+          username.text = '';
+          password.text = '';
+        });
+
+        // ignore: use_build_context_synchronously
+        Navigator.pushNamedAndRemoveUntil(
+            context, '/dashboard_admin', (route) => false);
+      }
     } catch (e) {
       // ignore: avoid_print
       print('Error adding to user.json: $e');
@@ -165,7 +182,7 @@ class _TambahSiswaState extends State<TambahSiswa> {
                   const SizedBox(height: 20),
                   GestureDetector(
                     onTap: () {
-                      _uploadFile();
+                      addToDataJson();
                     },
                     child: Container(
                       padding: const EdgeInsets.symmetric(vertical: 15),

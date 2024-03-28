@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:perpustakaan/components/custom_expansiontile.dart';
 import 'package:perpustakaan/models/auth_model.dart';
@@ -16,6 +17,7 @@ class DashboardAdmin extends StatefulWidget {
 
 class _DashboardAdminState extends State<DashboardAdmin> {
   List<dynamic> allData = [];
+  List<dynamic> allDataFromApp = [];
   List<dynamic> searchResults = [];
   Map<String, List<dynamic>> groupedData = {};
   TextEditingController searchController = TextEditingController();
@@ -35,11 +37,15 @@ class _DashboardAdminState extends State<DashboardAdmin> {
 
   Future<void> fetchData() async {
     try {
-      // Baca data saat ini dari book.json
       List<dynamic> jsonData = await fetchBookData();
+      String jsonDataFromAssets =
+          await rootBundle.loadString('lib/assets/book.json');
+      List<dynamic> booksFromAssets = json.decode(jsonDataFromAssets);
+
+      List<dynamic> mergedData = [...jsonData, ...booksFromAssets];
 
       setState(() {
-        allData = jsonData;
+        allData = mergedData;
         searchResults = List.from(allData);
         groupDataByGenre();
       });
@@ -95,7 +101,7 @@ class _DashboardAdminState extends State<DashboardAdmin> {
   void groupDataByGenre() {
     groupedData.clear();
     for (var book in searchResults) {
-      String genre = book['genre'] ?? 'Lainnya';
+      String genre = book['category'] ?? 'Lainnya';
       if (!groupedData.containsKey(genre)) {
         groupedData[genre] = [];
       }
@@ -345,13 +351,7 @@ class _DashboardAdminState extends State<DashboardAdmin> {
                             height: 150,
                             child: Row(
                               children: [
-                                Image.file(
-                                  File(
-                                    book['image_link'],
-                                  ),
-                                  fit: BoxFit.fill,
-                                  width: 100,
-                                ),
+                                _buildBookImage(book['image_link']),
                                 const SizedBox(width: 16),
                                 Expanded(
                                   child: Column(
@@ -385,7 +385,7 @@ class _DashboardAdminState extends State<DashboardAdmin> {
                                             fontFamily: 'ErasBoldItc'),
                                       ),
                                       Text(
-                                        'Kategori: ${book['genre']}',
+                                        'Kategori: ${book['category']}',
                                         style: const TextStyle(
                                             fontFamily: 'ErasBoldItc'),
                                       ),
@@ -426,6 +426,22 @@ class _DashboardAdminState extends State<DashboardAdmin> {
           ),
         ),
       ),
+    );
+  }
+}
+
+Widget _buildBookImage(String imagePath) {
+  if (imagePath.startsWith('img/pdf')) {
+    return Image.asset(
+      imagePath,
+      fit: BoxFit.fill,
+      width: 100,
+    );
+  } else {
+    return Image.file(
+      File(imagePath),
+      fit: BoxFit.fill,
+      width: 100,
     );
   }
 }
@@ -486,6 +502,14 @@ class BookDetailPage extends StatelessWidget {
             ),
           ],
         ),
-        body: SfPdfViewer.file(File(book['pdf_link'])));
+        body: _buildPdf(book['pdf_link']));
+  }
+}
+
+Widget _buildPdf(String pdfPath) {
+  if (pdfPath.startsWith('pdf/')) {
+    return SfPdfViewer.asset(pdfPath);
+  } else {
+    return SfPdfViewer.file(File(pdfPath));
   }
 }

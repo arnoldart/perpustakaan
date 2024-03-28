@@ -22,9 +22,9 @@ class _UploadPageAdminState extends State<UploadPageAdmin> {
   TextEditingController yearController = TextEditingController();
   TextEditingController publisherController = TextEditingController();
 
-  String selectedGenre = 'Lainnya'; // Default genre
+  String selectedCategory = 'Lainnya'; // Default genre
 
-  List<String> genres = [
+  List<String> categories = [
     "Bahasa Indonesia",
     "Bahasa Inggris",
     "Informatika",
@@ -132,7 +132,7 @@ class _UploadPageAdminState extends State<UploadPageAdmin> {
           authorController.text = '';
           yearController.text = '';
           publisherController.text = '';
-          selectedGenre = 'Lainnya';
+          selectedCategory = 'Lainnya';
           pdfPath = null;
           imagePath = null;
           isImageNotSelected = false;
@@ -164,7 +164,7 @@ class _UploadPageAdminState extends State<UploadPageAdmin> {
         isAuthorEmpty ||
         isYearEmpty ||
         isPublisherEmpty ||
-        selectedGenre.isEmpty) {
+        selectedCategory.isEmpty) {
       return false;
     }
     return true;
@@ -199,7 +199,7 @@ class _UploadPageAdminState extends State<UploadPageAdmin> {
         'Author': authorController.text,
         'Tahun': int.parse(yearController.text),
         'Penerbit': publisherController.text,
-        'genre': selectedGenre,
+        'category': selectedCategory,
       });
 
       await File(bookJsonPath).writeAsString(json.encode(jsonData));
@@ -305,23 +305,24 @@ class _UploadPageAdminState extends State<UploadPageAdmin> {
                   ),
                   const SizedBox(height: 20),
                   DropdownButton<String>(
-                    value: selectedGenre,
+                    value: selectedCategory,
                     onChanged: (String? value) {
                       setState(() {
-                        selectedGenre = value!;
+                        selectedCategory = value!;
                       });
                     },
-                    items: genres.map<DropdownMenuItem<String>>((String genre) {
+                    items: categories
+                        .map<DropdownMenuItem<String>>((String category) {
                       return DropdownMenuItem<String>(
-                        value: genre,
+                        value: category,
                         child: Text(
-                          genre,
+                          category,
                           style: const TextStyle(fontFamily: 'ErasBoldItc'),
                         ),
                       );
                     }).toList(),
                     hint: const Text(
-                      'Select Genre',
+                      'Select Category',
                       style: TextStyle(fontFamily: 'ErasBoldItc'),
                     ),
                   ),
